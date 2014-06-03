@@ -1,0 +1,4 @@
+tmp/
+.idea/
+deploy/js/
+node_modules/
