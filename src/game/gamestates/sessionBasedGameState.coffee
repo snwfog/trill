@@ -1,0 +1,2 @@
+class Trill.SessionBasedGameState
+
