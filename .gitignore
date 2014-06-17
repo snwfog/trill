@@ -32,3 +32,5 @@ node_modules
 .lock-wscript
 
 bower_components/*
+*.map
+*.js
