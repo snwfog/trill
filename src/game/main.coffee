@@ -1,9 +1,10 @@
+#require webapi.coffee
+
 ###
   This is a simple state template to use for getting a Phaser game up
   and running quickly. Simply add your own game logic to the default
   state object or delete it and make your own.
 ###
-
 state =
     init: ->
         # Delete this init block or replace with your own logic
@@ -29,3 +30,17 @@ game = new Phaser.Game(
     'game',
     state
 )
+webapi = new WebApi({url:'http://localhost:3000/'})
+
+webapi.listener =
+
+  onConnected: ->
+    webapi.createGame()
+
+  onOtherPlayerConnectionLost: ->
+
+
+
+
+webapi.connect()
+
