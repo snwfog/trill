@@ -1,0 +1,28 @@
+{
+  "name": "trill",
+  "version": "0.0.0",
+  "authors": [
+    "Charles Yang",
+    "Robson Razafindmary"
+  ],
+  "description": "Trill, a keyboard smashing stupid online multiplayer game",
+  "keywords": [
+    "game",
+    "smash",
+    "keyboard",
+    "stupid",
+    "npm",
+    "node",
+    "multiplayer"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/snwfog/trill",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
