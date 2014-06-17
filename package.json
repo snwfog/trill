@@ -1,13 +1,13 @@
 {
   "name": "trill",
   "version": "2.0.0",
-  "description": "A simple template project to quickly get up and running with Phaser.",
+  "description": "The press, smash, or smash, stupid game that measures your [trill](https://en.wikipedia.org/wiki/Trill_(music)) in action per minute. Compete against your friends, and crush them with your finger agility.",
   "main": "deploy/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "http://github.com/gamecook/phaser-template",
-  "author": "Jesse Freeman",
+  "repository": "http://github.com/snwfog/trill",
+  "author": ["Charles Yang", "Robson Raza"],
   "license": "MIT",
   "devDependencies": {
     "grunt": "^0.4.5",

@@ -1,6 +1,7 @@
 module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-connect'
+  grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-open'
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
@@ -37,6 +38,8 @@ module.exports = (grunt) ->
       compile:
         files:
           'tmp/concatenated.js':'tmp/concatenated.coffee'
+
+    clean: ["./deploy", "./tmp"]
   )
 
   grunt.registerTask 'compile-and-concat', ['coffeescript_concat', 'coffee', 'concat']
