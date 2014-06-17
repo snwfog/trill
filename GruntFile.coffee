@@ -20,7 +20,7 @@ module.exports = (grunt) ->
     concat:
       dist:
         src: ["src/lib/**/*.js", "tmp/concatenated.js"]
-        dest: 'deploy/js/<%= pkg.name %>.js'
+        dest: 'deploy/<%= pkg.name %>.js'
 
     watch:
       files: 'src/**/*.coffee'
@@ -54,7 +54,9 @@ module.exports = (grunt) ->
     clean: ["./deploy", "./tmp"]
   )
 
-  grunt.registerTask 'compile-and-concat'
-      , ['coffeescript_concat', 'coffee', 'concat']
   grunt.registerTask 'default'
-      , ['clean', 'compile-and-concat', 'copy']
+  , ['clean', 'compile-and-concat', 'copy']
+  grunt.registerTask 'lazy', ['compile-and-concat', 'connect', 'open', 'watch']
+  grunt.registerTask 'compile-and-concat'
+  , ['coffeescript_concat', 'coffee', 'concat']
+
