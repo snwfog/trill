@@ -1,6 +1,8 @@
 module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-connect'
+  grunt.loadNpmTasks 'grunt-contrib-clean'
+  grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-open'
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
@@ -18,7 +20,7 @@ module.exports = (grunt) ->
     concat:
       dist:
         src: ["src/lib/**/*.js", "tmp/concatenated.js"]
-        dest: 'deploy/js/<%= pkg.name %>.js'
+        dest: 'deploy/<%= pkg.name %>.js'
 
     watch:
       files: 'src/**/*.coffee'
@@ -36,8 +38,25 @@ module.exports = (grunt) ->
     coffee:
       compile:
         files:
-          'tmp/concatenated.js':'tmp/concatenated.coffee'
+          'tmp/concatenated.js': 'tmp/concatenated.coffee'
+
+    copy:
+      main:
+        files: [
+          expand: true
+          flatten: true
+          src: ['./src/**/*.js'
+            , './src/**/*.html'
+            , './src/**/*.css']
+          dest: './deploy'
+        ]
+
+    clean: ["./deploy", "./tmp"]
   )
 
-  grunt.registerTask 'compile-and-concat', ['coffeescript_concat', 'coffee', 'concat']
-  grunt.registerTask 'default', ['compile-and-concat', 'connect', 'open', 'watch']
+  grunt.registerTask 'default'
+  , ['clean', 'compile-and-concat', 'copy']
+  grunt.registerTask 'lazy', ['compile-and-concat', 'connect', 'open', 'watch']
+  grunt.registerTask 'compile-and-concat'
+  , ['coffeescript_concat', 'coffee', 'concat']
+
