@@ -11,4 +11,4 @@ server.listen 8080, "0.0.0.0", ->
 
 io = sio.listen(server)
 io.sockets.on 'connection', (socket) ->
-  console.log "received connection"
+  console.log(socket)
