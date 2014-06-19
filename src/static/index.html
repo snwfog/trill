@@ -10,11 +10,10 @@
 <h1>Welcome to Trill</h1>
 <p>A keyboard smashing stupid online game.</p>
 
+<script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
-  window.onload = function() {
-    var socket = io.connect();
-  }
+    var socket = io();
 </script>
 </body>
 </html>
