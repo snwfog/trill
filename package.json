@@ -4,6 +4,8 @@
   "description": "The press, smash, or smash, stupid game that measures your [trill](https://en.wikipedia.org/wiki/Trill_(music)) in action per minute. Compete against your friends, and crush them with your finger agility.",
   "main": "GruntFile.js",
   "dependencies": {
+    "mime": "^1.2.11",
+    "path": "^0.4.9",
     "socket.io": "^1.0.4"
   },
   "devDependencies": {
