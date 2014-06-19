@@ -1,4 +1,6 @@
 module.exports = (grunt) ->
+
+  grunt.loadNpmTasks 'grunt-bower-task'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-connect'
   grunt.loadNpmTasks 'grunt-contrib-clean'
@@ -7,6 +9,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-coffeescript-concat'
+  grunt.loadNpmTasks 'grunt-http-server'
 
   grunt.initConfig(
     pkg: grunt.file.readJSON 'package.json'
@@ -15,48 +18,72 @@ module.exports = (grunt) ->
       server:
         options:
           port: 8080,
-          base: './deploy'
+          base: 'deploy'
 
     concat:
-      dist:
-        src: ["src/lib/**/*.js", "tmp/concatenated.js"]
+      client:
+        src: ["lib/**/*.js", "libs/**/*.js", "tmp/client.js"]
         dest: 'deploy/<%= pkg.name %>.js'
 
     watch:
       files: 'src/**/*.coffee'
       tasks: ['compile-and-concat']
 
+    'http-server':
+      dev:
+        root: './deploy',
+        port: 8282,
+        host: "localhost",
+        cache: 0,
+        showDir : true,
+        autoIndex: false,
+        defaultExt: "html"
+        runInBackground: true
+
     open:
       dev:
-        path: 'http://localhost:8080/index.html'
+        path: 'http://localhost:8282/trill.html'
 
     coffeescript_concat:
       compile:
         files:
-          'tmp/concatenated.coffee': ['src/game/**/*.coffee']
+          'tmp/client.coffee': ['src/game/client/**/*.coffee']
+          'tmp/server.coffee': ['src/game/server/**/*.coffee']
 
     coffee:
       compile:
         files:
-          'tmp/concatenated.js': 'tmp/concatenated.coffee'
+          'tmp/client.js': 'tmp/client.coffee'
+          'tmp/server.js': 'tmp/server.coffee'
 
     copy:
-      main:
+      client:
         files: [
           expand: true
           flatten: true
-          src: ['./src/**/*.js'
-            , './src/**/*.html'
-            , './src/**/*.css']
+          src: [
+            './src/**/*.html',
+            './src/**/*.css'
+          ]
           dest: './deploy'
         ]
+      server:
+        files: [
+          src: [
+            'tmp/server.js'
+          ]
+          dest: './deploy/server.js'
+        ]
 
-    clean: ["./deploy", "./tmp"]
+    bower:
+      install:
+        options:
+          verbose:true
+
+    clean: ["./deploy", "./tmp", './lib']
   )
 
-  grunt.registerTask 'default'
-  , ['clean', 'compile-and-concat', 'copy']
-  grunt.registerTask 'lazy', ['compile-and-concat', 'connect', 'open', 'watch']
-  grunt.registerTask 'compile-and-concat'
-  , ['coffeescript_concat', 'coffee', 'concat']
+  grunt.registerTask 'default', ['clean', 'bower:install', 'compile-and-concat']
+  grunt.registerTask 'open-game', ['default', 'http-server', 'open']
+  grunt.registerTask 'compile-and-concat', ['coffeescript_concat', 'coffee', 'concat:client', 'copy', 'watch']
 
