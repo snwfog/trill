@@ -46,7 +46,7 @@ sendFile = (response, filePath, fileContents) ->
 
 send404 = (response) ->
   response.writeHead(404, { 'Content-Type': 'text/plain' })
-  response.write('Error 404: resourse not found')
+  response.write('Error 404: resource not found')
   response.end()
 
 
