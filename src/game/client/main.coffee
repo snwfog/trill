@@ -30,8 +30,10 @@ game = new Phaser.Game(
     'game',
     state
 )
-webapi = new WebApi({url:'http://localhost:8080/'})
 
+intervalId = undefined
+
+webapi = new WebApi({url:'http://localhost:8080/'})
 webapi.listener =
 
   onConnected: ->
@@ -48,6 +50,7 @@ webapi.listener =
     webapi.sendPlayerReady()
 
   onGameEnded: ->
+    clearInterval(intervalId)
     console.log 'hey ! game is ended !'
 
   onPacketReceived: (packet) ->
@@ -59,8 +62,7 @@ webapi.listener =
 
     setTimeout( () ->
 
-      setInterval( () ->
-
+      intervalId = setInterval( () ->
         webapi.sendPacket 'packet'
       , 50)
 
