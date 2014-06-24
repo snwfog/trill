@@ -10,6 +10,7 @@ WebApi = (config) ->
     onPacketReceived(packet)
     onDisconnected
     onOtherPlayerConnectionLost
+    OnGameCountDownStart
   ###
   @listener = undefined
 
@@ -25,7 +26,7 @@ WebApi = (config) ->
 
     @_socket.on 'connect', =>
       console.log 'connected'
-      @_requestId()
+      @_socket.emit 'requestId'
 
     @_socket.on 'disconnect', =>
       console.log 'disconnected'
@@ -58,6 +59,9 @@ WebApi = (config) ->
       console.log data
       @_fireEvent 'OnGameCreated', data
 
+    @_socket.on 'gameCountDownStart', (data) =>
+      @_fireEvent 'OnGameCountDownStart', data
+
   ###
   Creates game. First parameter of callback is the gamecode, second is
   an error.
@@ -68,23 +72,34 @@ WebApi = (config) ->
   ###
   Starts a persistent connection with the server
   and join the game with the specified gamecode.
+  Sends packet to the server. Server should emit either a
+  gameReady response or an error response if game is not joinable.
   ###
   join: ->
     @_socket.emit 'joinGame'
 
   ###
-  Sends packet to the server
-
-  packet = the packet to send.
+  Sends packet to the server. Server should not emit
+  an event in response
   ###
   sendPacket: (packet) ->
     @_socket.emit 'sendPacket', packet
 
+
   ###
-  Requests a socketId
+  Emits message to notify the server that game start counter can begin.
+  Server should answer with OnGameCountDown event
+  ###
+  sendPlayerReady: () ->
+    @_socket.emit 'roundReady'
+
+  ###
+  Requests a socketId, server should send a 'newId' event
+  in response.
   ###
   _requestId: ->
     @_socket.emit 'requestId'
 
   _fireEvent: (eventName, data) ->
+    console.log @listener
     if @listener[eventName]? then @listener[eventName](data)

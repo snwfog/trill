@@ -42,19 +42,22 @@ module.exports = (grunt) ->
 
     open:
       dev:
-        path: 'http://localhost:8282/trill.html'
+        path: 'http://localhost:8080/trill.html'
 
     coffeescript_concat:
       compile:
         files:
           'tmp/client.coffee': ['src/game/client/**/*.coffee']
-          'tmp/server.coffee': ['src/game/server/**/*.coffee']
 
     coffee:
-      compile:
+      'compile-client':
         files:
           'tmp/client.js': 'tmp/client.coffee'
-          'tmp/server.js': 'tmp/server.coffee'
+
+      'compile-server':
+        files:
+          'tmp/server/server.js':'src/game/server/server.coffee',
+          'tmp/server/trill-server.js':'src/game/server/trill-server.coffee'
 
     copy:
       client:
@@ -67,12 +70,15 @@ module.exports = (grunt) ->
           ]
           dest: './deploy'
         ]
+
       server:
         files: [
+          expand: true
+          flatten: true
           src: [
-            'tmp/server.js'
+            'tmp/server/**/*.js'
           ]
-          dest: './deploy/server.js'
+          dest: 'deploy/server'
         ]
 
     bower:
@@ -85,5 +91,5 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'default', ['clean', 'bower:install', 'compile-and-concat']
   grunt.registerTask 'open-game', ['default', 'http-server', 'open']
-  grunt.registerTask 'compile-and-concat', ['coffeescript_concat', 'coffee', 'concat:client', 'copy', 'watch']
+  grunt.registerTask 'compile-and-concat', ['coffeescript_concat', 'coffee', 'concat:client', 'copy']
 

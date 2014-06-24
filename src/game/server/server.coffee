@@ -50,5 +50,4 @@ send404 = (response) ->
   response.end()
 
 
-trillServer = require('./trill-server')
-trillServer.listen(server)
+exports.listen(server)

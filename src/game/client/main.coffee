@@ -30,7 +30,7 @@ game = new Phaser.Game(
     'game',
     state
 )
-webapi = new WebApi({url:'http://localhost:3000/'})
+webapi = new WebApi({url:'http://localhost:8080/'})
 
 webapi.listener =
 
@@ -38,9 +38,34 @@ webapi.listener =
     webapi.createGame()
 
   onOtherPlayerConnectionLost: ->
+    console.log 'hey ! the other guy quit !'
 
+  onDisconnected: ->
+    console.log 'hey ! it is disconnected!'
 
+  onGameReady: ->
+    console.log 'hey ! game is ready !'
+    webapi.sendPlayerReady()
 
+  onGameEnded: ->
+    console.log 'hey ! game is ended !'
+
+  onPacketReceived: (packet) ->
+    console.log 'hey ! packet is received : '
+    console.log packet
+
+  OnGameCountDownStart: (millis) ->
+    console.log 'hey ! game starts in ' + millis + 'mins !'
+
+    setTimeout( () ->
+
+      setInterval( () ->
+
+        webapi.sendPacket 'packet'
+      , 50)
+
+    , millis)
 
 webapi.connect()
+
 
