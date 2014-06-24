@@ -55,7 +55,7 @@ webapi.listener =
     console.log packet
 
   OnGameCountDownStart: (millis) ->
-    console.log 'hey ! game starts in ' + millis + 'mins !'
+    console.log 'hey ! game starts in ' + millis + ' millis !'
 
     setTimeout( () ->
 

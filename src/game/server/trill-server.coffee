@@ -19,10 +19,11 @@ exports.listen = (server) ->
       socket.emit 'gameReady'
 
     socket.on 'sendPacket', (data) ->
+      console.log 'packet Received : ' + data
       socket.broadcast.emit 'packet Received', data
 
     socket.on 'roundReady', ->
-      socket.broadcast.emit 'gameCountDownStart'
+      socket.emit 'gameCountDownStart', 3000
 
     getGameInstance(socket)
 
