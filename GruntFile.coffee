@@ -66,7 +66,9 @@ module.exports = (grunt) ->
           flatten: true
           src: [
             './src/**/*.html',
-            './src/**/*.css'
+            './src/**/*.css',
+            './src/game/trill-server.js',
+            './src/game/server/server.js'
           ]
           dest: './deploy'
         ]

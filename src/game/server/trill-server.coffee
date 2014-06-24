@@ -1,4 +1,5 @@
 socketio = require('socket.io')
+$log = require('util').log
 gameId = 1
 players = []
 gameInstances = []
@@ -25,13 +26,21 @@ exports.listen = (server) ->
 
     getGameInstance(socket)
 
+  setInterval ( ->
+    if (waitingGames = hasWaitingGame())
+      $log "There are currently waiting game"
+    ), 1000
+
+hasWaitingGame = ->
+  (gameInstances.filter (game) -> game.isWaiting()).length != 0
+
 getGameInstance = (socket) ->
   p = new Player(socket.id)
-  if (instance = getNextWaitingGame() == undefined)
+  if ((instance = getNextWaitingGame()) == undefined)
     instance = new GameInstance(gameId++)
 
   instance.assignPlayerToGame(p)
-  gameInstances << instance
+  gameInstances.push instance
 
 getNextWaitingGame = ->
   for gameInstance in gameInstances
