@@ -49,5 +49,5 @@ send404 = (response) ->
   response.write('Error 404: resource not found')
   response.end()
 
-
-exports.listen(server)
+trillServer = require('./trill-server')
+trillServer.listen(server)
