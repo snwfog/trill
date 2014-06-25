@@ -42,8 +42,8 @@ WebApi = (config) ->
       console.log 'event gameready fired'
       @_fireEvent 'onGameReady'
 
-    @_socket.on 'packetreceived', (data) =>
-      console.log 'event packetreceived fired'
+    @_socket.on 'serverPacket', (data) =>
+      console.log 'event serverPacket fired'
       @_fireEvent 'onPacketReceived', data
 
     @_socket.on 'gameEnded', (data) =>

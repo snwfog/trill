@@ -24,11 +24,21 @@ exports.listen = (server) ->
 
     socket.on 'roundReady', ->
       socket.emit 'gameCountDownStart', 3000
-      setTimeout( () ->
+      setTimeout( ->
 
-        console.log 'gameEnded'
-        socket.emit 'gameEnded'
-      , 13 * 1000)
+        sendPacketInterval = setInterval( ->
+          socket.emit 'serverPacket', Math.random()
+        , 100)
+
+        setTimeout( ->
+
+          clearInterval sendPacketInterval
+          console.log 'gameEnded'
+          socket.emit 'gameEnded'
+
+        , 10 * 1000)
+
+      , 3 * 1000)
 
     getGameInstance(socket)
 
