@@ -65,8 +65,9 @@ module.exports = (grunt) ->
           expand: true
           flatten: true
           src: [
-            './src/**/*.html',
-            './src/**/*.css',
+            './src/static/**/*.html',
+            './src/static/**/*.css',
+            './src/static/**/*.png',
             './src/game/trill-server.js',
             './src/game/server/server.js'
           ]

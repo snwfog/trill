@@ -22,7 +22,7 @@ WebApi = (config) ->
   Starts a persistent connection with server.
   ###
   connect: (callback) ->
-    @_socket = io config.url
+    @_socket = io @config.url
 
     @_socket.on 'connect', =>
       console.log 'connected'

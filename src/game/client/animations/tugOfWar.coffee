@@ -1,3 +1,0 @@
-Trill.Animations.TugOfWar = ->
-
-  @start

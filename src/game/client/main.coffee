@@ -1,4 +1,4 @@
-#require webapi.coffee
+#= require webapi
 
 ###
   This is a simple state template to use for getting a Phaser game up
@@ -23,51 +23,6 @@ state =
     update: ->
         # State Update Logic goes here.
 
-game = new Phaser.Game(
-    800,
-    480,
-    Phaser.AUTO,
-    'game',
-    state
-)
-
-intervalId = undefined
-
-webapi = new WebApi({url:'http://localhost:8080/'})
-webapi.listener =
-
-  onConnected: ->
-    webapi.createGame()
-
-  onOtherPlayerConnectionLost: ->
-    console.log 'hey ! the other guy quit !'
-
-  onDisconnected: ->
-    console.log 'hey ! it is disconnected!'
-
-  onGameReady: ->
-    console.log 'hey ! game is ready !'
-    webapi.sendPlayerReady()
-
-  onGameEnded: ->
-    clearInterval(intervalId)
-    console.log 'hey ! game is ended !'
-
-  onPacketReceived: (packet) ->
-    console.log 'hey ! packet is received : '
-    console.log packet
-
-  OnGameCountDownStart: (millis) ->
-    console.log 'hey ! game starts in ' + millis + ' millis !'
-
-    setTimeout( () ->
-
-      intervalId = setInterval( () ->
-        webapi.sendPacket 'packet'
-      , 50)
-
-    , millis)
-
-webapi.connect()
-
-
+game = new Phaser.Game 800, 480, Phaser.AUTO, '', state, false, false
+game['webapi'] = new WebApi({url:'http://localhost:8080/'})
+#game.state.add 'InGame', new InGameState(), true
