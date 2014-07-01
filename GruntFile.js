@@ -28,36 +28,77 @@ module.exports = function(grunt) {
       }
     },
 
-    copy: {
-      client: {
-        files: [{
-          expand: true,
-          flatten: true,
-          src: ['./src/static/**/*.html', './src/static/**/*.css', './src/static/**/*.png', './src/game/trill-server.js', './src/game/server/server.js'],
-          dest: './deploy'
-        }]
-      },
-      server: {
-        files: [{
-          expand: true,
-          flatten: true,
-          src: ['src/server/**/*.js'],
-          dest: 'deploy/server'
-        }]
-      }
-    },
+        copy: {
+            client: {
+                files: [
+                    {
+                        expand: true,
+                        flatten: false,
+                        cwd: 'src/',
+                        src: [
+                            'static/**/*.css',
+                            'static/**/*.png'],
+                        dest: './deploy'
+                    }
+                ]
+            },
+            'client-libs': {
+                files: [
+                    {
+                        expand: true,
+                        flatten: false,
+                        src: ['./libs/*'],
+                        dest: './deploy'
+                    }
+                ]
+            },
+            server: {
+                files: [
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['src/server/**/*.js'],
+                        dest: 'deploy/server'
+                    }
+                ]
+            },
+            main: {
+                files: [
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['src/static/*.html'],
+                        dest: 'deploy'
+                    }
+                ]
+            }
+        },
+        
+        bower: {
+            install: {
+                options: {
+                    verbose: true
+                }
+            }
+        },
 
-    bower: {
-      install: {
-        options: {
-          verbose: true
-        }
-      }
-    },
-    clean: ["./deploy", './lib']
-  })
+        wiredep: {
+            target: {
+                src: [
+                    'deploy/trill.html'
+                ],
+                cwd: 'deploy/',
+                bowerJson: require('./bower.json'),
+                directory: './bower_components'
+            }
 
-  grunt.registerTask('default', ['clean', 'bower:install', 'compile-and-concat'])
-  grunt.registerTask('open-game', ['default', 'open'])
-  grunt.registerTask('compile-and-concat', ['concat', 'copy'])
+        },
+
+
+        clean: ["./deploy"]
+    })
+
+    grunt.registerTask('default', ['clean', 'compile-and-concat'])
+    grunt.registerTask('open-game', ['default', 'open'])
+    grunt.registerTask('compile-and-concat', ['concat', 'copy', 'wiredep'])
 }
