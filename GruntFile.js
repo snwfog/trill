@@ -1,11 +1,12 @@
 module.exports = function(grunt) {
 
-  grunt.loadNpmTasks('grunt-bower-task')
-  grunt.loadNpmTasks('grunt-contrib-watch')
-  grunt.loadNpmTasks('grunt-contrib-clean')
-  grunt.loadNpmTasks('grunt-contrib-copy')
-  grunt.loadNpmTasks('grunt-contrib-concat')
-  grunt.loadNpmTasks('grunt-open')
+    grunt.loadNpmTasks('grunt-bower-task')
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-open');
+    grunt.loadNpmTasks('grunt-injector');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -46,9 +47,9 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        flatten: false,
-                        src: ['./libs/*'],
-                        dest: './deploy'
+                        flatten: true,
+                        src: ['./src/lib/*'],
+                        dest: './deploy/lib'
                     }
                 ]
             },
@@ -77,28 +78,24 @@ module.exports = function(grunt) {
         bower: {
             install: {
                 options: {
-                    verbose: true
+                    verbose: true,
+                    targetDir: 'deploy/lib'
                 }
             }
         },
 
-        wiredep: {
-            target: {
-                src: [
-                    'deploy/trill.html'
-                ],
-                cwd: 'deploy/',
-                bowerJson: require('./bower.json'),
-                directory: './bower_components'
+        injector: {
+            local_dependencies: {
+                files: {
+                    'deploy/trill.html' : ['deploy/lib/**/*.js', 'deploy/<%= pkg.name %>.js']
+                }
             }
-
         },
-
 
         clean: ["./deploy"]
     })
 
     grunt.registerTask('default', ['clean', 'compile-and-concat'])
     grunt.registerTask('open-game', ['default', 'open'])
-    grunt.registerTask('compile-and-concat', ['concat', 'copy', 'wiredep'])
+    grunt.registerTask('compile-and-concat', ['concat', 'bower', 'copy', 'injector'])
 }
