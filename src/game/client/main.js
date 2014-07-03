@@ -1,5 +1,6 @@
 
 var webapi = require('./networking/webapi.js');
+var ingamestate = require('./gamestates/inGameState.js');
 
 /*
  This is a simple state template to use for getting a Phaser game up
@@ -23,8 +24,10 @@ var state = {
     update: function() {}
 };
 
-var game = new Phaser.Game(800, 480, Phaser.AUTO, '', state, false, false);
+var game = new Phaser.Game(800, 480, Phaser.AUTO, '', null, false, false);
 
 game['webapi'] = new webapi({
     url: 'http://localhost:8080/'
 });
+
+game.state.add('inGameState', new ingamestate(game), true);
