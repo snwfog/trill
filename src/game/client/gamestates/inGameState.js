@@ -1,4 +1,3 @@
-
 var InGameState = function InGameState() {
     this.intervalId = void 0;
 

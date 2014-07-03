@@ -125,4 +125,6 @@ WebApi.prototype = {
 
 }
 
-WebApi.prototype.constructor = WebApi
+WebApi.prototype.constructor = WebApi;
+
+module.exports = WebApi;

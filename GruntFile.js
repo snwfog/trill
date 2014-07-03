@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-bower-task')
     grunt.loadNpmTasks('grunt-contrib-watch');
@@ -7,27 +7,21 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-open');
     grunt.loadNpmTasks('grunt-injector');
+    grunt.loadNpmTasks('grunt-browserify');
 
-  grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
 
-    concat: {
-      client: {
-        src: ["src/game/client/**/*.js"],
-        dest: 'deploy/<%= pkg.name %>.js'
-      }
-    },
+        watch: {
+            files: 'src/**/*.js',
+            tasks: ['compile-and-concat']
+        },
 
-    watch: {
-      files: 'src/**/*.js',
-      tasks: ['compile-and-concat']
-    },
-
-    open: {
-      dev: {
-        path: 'http://localhost:8080/trill.html'
-      }
-    },
+        open: {
+            dev: {
+                path: 'http://localhost:8080/trill.html'
+            }
+        },
 
         copy: {
             client: {
@@ -74,7 +68,7 @@ module.exports = function(grunt) {
                 ]
             }
         },
-        
+
         bower: {
             install: {
                 options: {
@@ -86,14 +80,22 @@ module.exports = function(grunt) {
 
         injector: {
             local_dependencies: {
-                options:{
+                options: {
                     transform: function (file) {
                         return '<script src="' + file.split('/').slice(2).join('/') + '"></script>';
                     }
                 },
 
                 files: {
-                    'deploy/trill.html' : ['deploy/lib/**/*.js', 'deploy/<%= pkg.name %>.js']
+                    'deploy/trill.html': ['deploy/lib/**/*.js', 'deploy/<%= pkg.name %>.js']
+                }
+            }
+        },
+
+        browserify: {
+            dist: {
+                files: {
+                    'deploy/<%= pkg.name %>.js': ['src/game/client/**/*.js']
                 }
             }
         },
@@ -103,5 +105,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['clean', 'compile-and-concat'])
     grunt.registerTask('open-game', ['default', 'open'])
-    grunt.registerTask('compile-and-concat', ['concat', 'bower', 'copy', 'injector'])
+    grunt.registerTask('compile-and-concat', ['browserify', 'bower', 'copy', 'injector'])
 }

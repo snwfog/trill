@@ -1,11 +1,12 @@
+
+var webapi = require('./networking/webapi.js');
+
 /*
  This is a simple state template to use for getting a Phaser game up
  and running quickly. Simply add your own game logic to the default
  state object or delete it and make your own.
  */
-var game, state;
-
-state = {
+var state = {
     init: function() {
         var style, t, text;
         text = "Phaser Version " + Phaser.VERSION + " works! Nice !";
@@ -22,7 +23,8 @@ state = {
     update: function() {}
 };
 
-game = new Phaser.Game(800, 480, Phaser.AUTO, '', state, false, false);
-game['webapi'] = new WebApi({
+var game = new Phaser.Game(800, 480, Phaser.AUTO, '', state, false, false);
+
+game['webapi'] = new webapi({
     url: 'http://localhost:8080/'
 });
