@@ -1,9 +1,16 @@
-var InGameState = function InGameState(game) {
-    this.intervalId = void 0;
+var InGameState = function InGameState() {
 
-    game.webapi.listener = {
+}
+
+InGameState.prototype = new Phaser.State()
+
+InGameState.prototype.constructor = InGameState
+
+InGameState.prototype.preload = function() {
+
+    this.game.webapi.listener = {
         onConnected: function () {
-            game.webapi.createGame();
+            this.game.webapi.createGame();
         },
         onOtherPlayerConnectionLost: function () {
             console.log('hey ! the other guy quit !');
@@ -13,7 +20,7 @@ var InGameState = function InGameState(game) {
         },
         onGameReady: function () {
             console.log('hey ! game is ready !');
-            game.webapi.sendPlayerReady();
+            this.game.webapi.sendPlayerReady();
         },
         onGameEnded: function () {
             clearInterval(this.intervalId);
@@ -27,18 +34,12 @@ var InGameState = function InGameState(game) {
             console.log('hey ! game starts in ' + millis + ' millis !');
             setTimeout(function () {
                 this.intervalId = setInterval(function () {
-                    webapi.sendPacket('packet');
+                    this.game.webapi.sendPacket('packet');
                 }, 50);
             }, millis);
         }
     };
-}
 
-InGameState.prototype = new Phaser.State()
-
-InGameState.prototype.constructor = InGameState
-
-InGameState.prototype.preload = function() {
     this.game.load.image('hand', 'static/imgs/hand.png');
     this.game.load.image('rope_end', 'static/imgs/rope_end.png');
     this.game.load.image('rope_knot', 'static/imgs/rope_knot.png');
