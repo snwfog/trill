@@ -22,7 +22,22 @@ exports.listen = function(server) {
       return socket.broadcast.emit('packet Received', data);
     });
     socket.on('roundReady', function() {
-      return socket.broadcast.emit('gameCountDownStart');
+
+      socket.emit('gameCountDownStart', 3 * 1000);
+
+      setTimeout(function(){
+
+          var intervalId = setInterval(function(){
+              socket.emit('serverPacket', Math.random() * 100);
+          }, 100);
+
+         setTimeout(function(){
+             clearInterval(intervalId);
+             socket.emit('gameEnded');
+         }, 5 * 1000);
+
+      }, 3 * 1000);
+
     });
     return getGameInstance(socket);
   });

@@ -30,4 +30,4 @@ game['webapi'] = new webapi({
     url: 'http://localhost:8080/'
 });
 
-game.state.add('inGameState', new ingamestate(game), true);
+game.state.add('inGameState', new ingamestate(), true);

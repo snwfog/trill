@@ -1,5 +1,6 @@
 var InGameState = function InGameState() {
 
+    this.intervalId = null;
 }
 
 InGameState.prototype = new Phaser.State()
@@ -8,9 +9,18 @@ InGameState.prototype.constructor = InGameState
 
 InGameState.prototype.preload = function() {
 
-    this.game.webapi.listener = {
+    this.game.load.image('hand', 'static/imgs/hand.png');
+    this.game.load.image('rope_end', 'static/imgs/rope_end.png');
+    this.game.load.image('rope_knot', 'static/imgs/rope_knot.png');
+    this.game.load.image('rope_middle', 'static/imgs/rope_middle.png');
+}
+
+InGameState.prototype.create = function() {
+
+    var state = this;
+    state.game.webapi.listener = {
         onConnected: function () {
-            this.game.webapi.createGame();
+            state.game.webapi.createGame();
         },
         onOtherPlayerConnectionLost: function () {
             console.log('hey ! the other guy quit !');
@@ -20,10 +30,10 @@ InGameState.prototype.preload = function() {
         },
         onGameReady: function () {
             console.log('hey ! game is ready !');
-            this.game.webapi.sendPlayerReady();
+            state.game.webapi.sendPlayerReady();
         },
         onGameEnded: function () {
-            clearInterval(this.intervalId);
+            clearInterval(state.intervalId);
             console.log('hey ! game is ended !');
         },
         onPacketReceived: function (packet) {
@@ -33,21 +43,15 @@ InGameState.prototype.preload = function() {
         OnGameCountDownStart: function (millis) {
             console.log('hey ! game starts in ' + millis + ' millis !');
             setTimeout(function () {
-                this.intervalId = setInterval(function () {
-                    this.game.webapi.sendPacket('packet');
+                state.intervalId = setInterval(function () {
+                    state.game.webapi.sendPacket('packet');
                 }, 50);
             }, millis);
         }
     };
+    this.game.webapi.connect();
 
-    this.game.load.image('hand', 'static/imgs/hand.png');
-    this.game.load.image('rope_end', 'static/imgs/rope_end.png');
-    this.game.load.image('rope_knot', 'static/imgs/rope_knot.png');
-    this.game.load.image('rope_middle', 'static/imgs/rope_middle.png');
-}
-
-InGameState.prototype.create = function() {
-    this.game.add.sprite(0, 0, 'hand');
+    this.game.add.sprite(this.stage.width, 0, 'hand');
 }
 
 module.exports = InGameState;
