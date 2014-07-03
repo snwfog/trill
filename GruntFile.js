@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 
     concat: {
       client: {
-        src: ["src/game/**/*.js"],
+        src: ["src/game/client/**/*.js"],
         dest: 'deploy/<%= pkg.name %>.js'
       }
     },
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         flatten: true,
-                        src: ['src/server/**/*.js'],
+                        src: ['src/game/server/**/*.js'],
                         dest: 'deploy/server'
                     }
                 ]
@@ -86,6 +86,12 @@ module.exports = function(grunt) {
 
         injector: {
             local_dependencies: {
+                options:{
+                    transform: function (file) {
+                        return '<script src="' + file.split('/').slice(2).join('/') + '"></script>';
+                    }
+                },
+
                 files: {
                     'deploy/trill.html' : ['deploy/lib/**/*.js', 'deploy/<%= pkg.name %>.js']
                 }
