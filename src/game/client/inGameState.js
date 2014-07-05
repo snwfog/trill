@@ -10,9 +10,8 @@ InGameState.prototype.constructor = InGameState
 InGameState.prototype.preload = function() {
 
     this.game.load.image('hand', 'static/imgs/hand.png');
-    this.game.load.image('rope_end', 'static/imgs/rope_end.png');
     this.game.load.image('rope_knot', 'static/imgs/rope_knot.png');
-    this.game.load.image('rope_middle', 'static/imgs/rope_middle.png');
+    this.game.load.image('rope_part', 'static/imgs/rope_middle.png');
 }
 
 InGameState.prototype.create = function() {
@@ -67,6 +66,11 @@ InGameState.prototype.create = function() {
     bottomHand.position.x = this.game.width/2;
     bottomHand.position.y = this.game.height - bottomHand.height/2;
 
+    var rope = this.game.add.group();
+    var knot = rope.create(0,0, 'rope_knot');
+    rope.anchor.setTo(0.5, 0.5);
+    rope.position.x = this.game.width/2;
+    rope.position.y = this.game.height/2;
 
 }
 
