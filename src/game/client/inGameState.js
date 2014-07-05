@@ -51,7 +51,23 @@ InGameState.prototype.create = function() {
     };
     this.game.webapi.connect();
 
-    this.game.add.sprite(this.stage.width, 0, 'hand');
+
+    var topHand = this.game.add.sprite(0, 0, 'hand');
+    topHand.anchor.setTo(0.34, 0.5);
+    topHand.scale.x = -1;
+
+    // Display hand at top middle of the stage
+    topHand.position.x = this.game.width/2;
+    topHand.position.y = topHand.height/2;
+
+    var bottomHand = this.game.add.sprite(0, 0, 'hand');
+    bottomHand.anchor.setTo(0.34, 0.5);
+
+    // Display hand at bottom middle of the stage
+    bottomHand.position.x = this.game.width/2;
+    bottomHand.position.y = this.game.height - bottomHand.height/2;
+
+
 }
 
 module.exports = InGameState;

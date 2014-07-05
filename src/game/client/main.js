@@ -23,7 +23,7 @@ var state = {
     update: function() {}
 };
 
-var game = new Phaser.Game(800, 480, Phaser.AUTO, '', null, false, false);
+var game = new Phaser.Game(800, 800, Phaser.AUTO, '', null, false, false);
 
 game['webapi'] = new webapi({
     url: 'http://localhost:8080/'
