@@ -1,6 +1,5 @@
-
-var webapi = require('./networking/webapi.js');
-var ingamestate = require('./gamestates/inGameState.js');
+var webapi = require('./webapi.js');
+var ingamestate = require('./inGameState.js');
 
 /*
  This is a simple state template to use for getting a Phaser game up
