@@ -13,7 +13,7 @@ module.exports = function (grunt) {
 
     open: {
       dev: {
-        path: 'http://localhost:8080/trill.html'
+        path: 'http://localhost:8080/index.html'
       }
     },
 
@@ -81,8 +81,7 @@ module.exports = function (grunt) {
         },
 
         files: {
-          'deploy/index.html': ['deploy/lib/**/*.js', 'deploy/trillClient.js'],
-          'deploy/trill.html': ['deploy/lib/**/*.js', 'deploy/trillClient.js']
+          'deploy/index.html': ['deploy/lib/**/*.js', 'deploy/trillClient.js']
         }
       }
     },
