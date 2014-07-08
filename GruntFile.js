@@ -1,7 +1,6 @@
 module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-bower-task')
-  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -11,11 +10,6 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-
-    watch: {
-      files: 'src/**/*.js',
-      tasks: ['compile-and-concat']
-    },
 
     open: {
       dev: {
@@ -95,7 +89,7 @@ module.exports = function (grunt) {
     browserify: {
       dist: {
         files: {
-          'deploy/<%= pkg.name %>.js': ['src/game/client/**/*.js']
+          'deploy/trillClient.js': ['src/game/client/*.js']
         }
       }
     },
@@ -103,7 +97,7 @@ module.exports = function (grunt) {
     clean: ["./deploy"]
   })
 
-  grunt.registerTask('default', ['clean', 'compile-and-concat'])
+  grunt.registerTask('default', ['clean', 'concat'])
   grunt.registerTask('open-game', ['default', 'open'])
-  grunt.registerTask('compile-and-concat', ['browserify', 'bower', 'copy', 'injector'])
+  grunt.registerTask('concat', ['browserify', 'bower', 'copy', 'injector'])
 }
