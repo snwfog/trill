@@ -81,7 +81,8 @@ module.exports = function (grunt) {
         },
 
         files: {
-          'deploy/trill.html': ['deploy/lib/**/*.js', 'deploy/<%= pkg.name %>.js']
+          'deploy/index.html': ['deploy/lib/**/*.js', 'deploy/trillClient.js'],
+          'deploy/trill.html': ['deploy/lib/**/*.js', 'deploy/trillClient.js']
         }
       }
     },
@@ -89,7 +90,7 @@ module.exports = function (grunt) {
     browserify: {
       dist: {
         files: {
-          'deploy/trillClient.js': ['src/game/client/*.js']
+          'deploy/trillClient.js': ['src/game/client/**/*.js']
         }
       }
     },
