@@ -50,7 +50,31 @@ InGameState.prototype.create = function() {
     };
     this.game.webapi.connect();
 
+    // Create the rope
+    var rope = this.game.add.group();
+    rope.position.x = this.game.width/2;
+    rope.position.y = this.game.height/2;
 
+    // First add the knot at the center of the screen
+    var knot = rope.create(0,0, 'rope_knot');
+    knot.anchor.setTo(0.5, 0.5);
+
+    // Then add rope parts that extend from the knot to the top and
+    // bottom of the screen
+    var ropeHeight = this.game.height/2;
+    var ropePartImg = this.game.cache.getImage('rope_part');
+
+    var ropeTop = this.game.add.tileSprite(0, 0, ropePartImg.width, ropeHeight, 'rope_part');
+    rope.addChild(ropeTop);
+    ropeTop.anchor.setTo(0.5, 1);
+    ropeTop.position.setTo(knot.x, knot.y - knot.height/2);
+
+    var ropeBottom = this.game.add.tileSprite(0, 0, ropePartImg.width, ropeHeight, 'rope_part');
+    rope.addChild(ropeBottom);
+    ropeBottom.anchor.setTo(0.5, 0);
+    ropeBottom.position.setTo(knot.x, knot.y + knot.height/2);
+
+    // Create top hand
     var topHand = this.game.add.sprite(0, 0, 'hand');
     topHand.anchor.setTo(0.34, 0.5);
     topHand.scale.x = -1;
@@ -59,19 +83,13 @@ InGameState.prototype.create = function() {
     topHand.position.x = this.game.width/2;
     topHand.position.y = topHand.height/2;
 
+    // Create bottom hand
     var bottomHand = this.game.add.sprite(0, 0, 'hand');
     bottomHand.anchor.setTo(0.34, 0.5);
 
     // Display hand at bottom middle of the stage
     bottomHand.position.x = this.game.width/2;
     bottomHand.position.y = this.game.height - bottomHand.height/2;
-
-    var rope = this.game.add.group();
-    var knot = rope.create(0,0, 'rope_knot');
-    rope.anchor.setTo(0.5, 0.5);
-    rope.position.x = this.game.width/2;
-    rope.position.y = this.game.height/2;
-
 }
 
 module.exports = InGameState;
