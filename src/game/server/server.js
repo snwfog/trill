@@ -61,5 +61,5 @@ var send404 = function(response) {
   return response.end();
 };
 
-var trillServer = require('./trill-server');
+var trillServer = require('./trillServer');
 trillServer.listen(server);
