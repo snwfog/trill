@@ -90,6 +90,14 @@ InGameState.prototype.create = function () {
   // Display hand at bottom middle of the stage
   bottomHand.position.x = this.game.width / 2;
   bottomHand.position.y = this.game.height - bottomHand.height / 2;
+
+  rope.scale.setTo(2.1,2.1);
+
+
+  // Let's animate all that.
+  this.game.add.tween(topHand.scale).to({x:-1.05, y:1.05}, 5000, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
+  this.game.add.tween(bottomHand.scale).to({x:1.05, y:1.05}, 5000, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
+  this.game.add.tween(rope.scale).to({x:rope.scale.x + 0.05, y:rope.scale.y + 0.05}, 7500, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
 }
 
 module.exports = InGameState;
