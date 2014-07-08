@@ -46,7 +46,7 @@ exports.listen = function(server) {
     if ((waitingGames = hasWaitingGame())) {
       return $log("There are currently waiting game");
     }
-  }), 1000);
+  }), 5000);
 };
 
 var hasWaitingGame = function() {
@@ -58,9 +58,16 @@ var hasWaitingGame = function() {
 var getGameInstance = function(socket) {
   var instance;
   var p = new Player(socket.id);
+  $log("$$$ A new player has joined the game! " + p);
+  players.push(p);
+
   if ((instance = getNextWaitingGame()) === void 0) {
     instance = new GameInstance(gameId++);
   }
+
+  $log("INFO: There are currently " + players.length
+      + " players in " + gameInstances.length + " games.");
+
   instance.assignPlayerToGame(p);
   return gameInstances.push(instance);
 };
