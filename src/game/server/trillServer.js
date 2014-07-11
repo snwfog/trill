@@ -28,7 +28,7 @@ exports.listen = function(server) {
       setTimeout(function(){
 
           var intervalId = setInterval(function(){
-              socket.emit('serverPacket', Math.random() * 100);
+              socket.emit('serverPacket', Math.random());
           }, 100);
 
          setTimeout(function(){

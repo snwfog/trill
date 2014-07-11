@@ -1,6 +1,11 @@
 var InGameState = function InGameState() {
 
   this.intervalId = null;
+
+  this.numOfTouches = 0;
+  this.currentTouchVelocity = 0;
+
+  this.opponentCurrentVelocity = 0;
 }
 
 InGameState.prototype = new Phaser.State()
@@ -16,42 +21,13 @@ InGameState.prototype.preload = function () {
 
 InGameState.prototype.create = function () {
 
-  var state = this;
-  state.game.webapi.listener = {
-    onConnected: function () {
-      state.game.webapi.createGame();
-    },
-    onOtherPlayerConnectionLost: function () {
-      console.log('hey ! the other guy quit !');
-    },
-    onDisconnected: function () {
-      console.log('hey ! it is disconnected!');
-    },
-    onGameReady: function () {
-      console.log('hey ! game is ready !');
-      state.game.webapi.sendPlayerReady();
-    },
-    onGameEnded: function () {
-      clearInterval(state.intervalId);
-      console.log('hey ! game is ended !');
-    },
-    onPacketReceived: function (packet) {
-      console.log('hey ! packet is received : ');
-      console.log(packet);
-    },
-    OnGameCountDownStart: function (millis) {
-      console.log('hey ! game starts in ' + millis + ' millis !');
-      setTimeout(function () {
-        state.intervalId = setInterval(function () {
-          state.game.webapi.sendPacket('packet');
-        }, 50);
-      }, millis);
-    }
-  };
-  this.game.webapi.connect();
+  this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
   // Create the rope
   var rope = this.game.add.group();
+  rope.enableBody = true;
+  rope.physicsBodyType = Phaser.Physics.ARCADE;
+
   rope.position.x = this.game.width / 2;
   rope.position.y = this.game.height / 2;
 
@@ -66,11 +42,15 @@ InGameState.prototype.create = function () {
 
   var ropeTop = this.game.add.tileSprite(0, 0, ropePartImg.width, ropeHeight, 'rope_part');
   rope.addChild(ropeTop);
+  this.game.physics.enable(ropeTop, Phaser.Physics.ARCADE);
+  ropeTop.enableBody = true;
   ropeTop.anchor.setTo(0.5, 1);
   ropeTop.position.setTo(knot.x, knot.y - knot.height / 2);
 
   var ropeBottom = this.game.add.tileSprite(0, 0, ropePartImg.width, ropeHeight, 'rope_part');
   rope.addChild(ropeBottom);
+  this.game.physics.enable(ropeBottom, Phaser.Physics.ARCADE);
+  ropeBottom.enableBody = true;
   ropeBottom.anchor.setTo(0.5, 0);
   ropeBottom.position.setTo(knot.x, knot.y + knot.height / 2);
 
@@ -98,6 +78,59 @@ InGameState.prototype.create = function () {
   this.game.add.tween(topHand.scale).to({x:-1.05, y:1.05}, 5000, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
   this.game.add.tween(bottomHand.scale).to({x:1.05, y:1.05}, 5000, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
   this.game.add.tween(rope.scale).to({x:rope.scale.x + 0.05, y:rope.scale.y + 0.05}, 7500, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
+
+  this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.NO_SCALE;
+  this.game.scale.startFullScreen();
+
+  // Register server callbacks.
+  var state = this;
+  state.game.webapi.listener = {
+    onConnected: function () {
+      state.game.webapi.createGame();
+    },
+    onOtherPlayerConnectionLost: function () {
+      console.log('hey ! the other guy quit !');
+    },
+    onDisconnected: function () {
+      console.log('hey ! it is disconnected!');
+    },
+    onGameReady: function () {
+      console.log('hey ! game is ready !');
+      state.game.webapi.sendPlayerReady();
+    },
+    onGameEnded: function () {
+      clearInterval(state.intervalId);
+      console.log('hey ! game is ended !');
+    },
+    onPacketReceived: function (packet) {
+
+      state.opponentCurrentVelocity = packet;
+      console.log(packet);
+    },
+    OnGameCountDownStart: function (millis) {
+      console.log('hey ! game starts in ' + millis + ' millis !');
+      setTimeout(function () {
+        state.intervalId = setInterval(function () {
+
+          state.currentTouchVelocity = state.numOfTouches/50;
+          console.log("your velocity is " + state.currentTouchVelocity);
+          console.log(state.currentTouchVelocity);
+          rope.setAll('body.velocity.y', state.opponentCurrentVelocity * 30 - state.currentTouchVelocity * 1.5 * 1000);
+          state.game.webapi.sendPacket(state.currentTouchVelocity);
+
+          state.numOfTouches = 0;
+        }, 50);
+      }, millis);
+
+      state.game.input.onTap.add(function(){
+
+        console.log("hey ! you are tapping !");
+        state.numOfTouches++;
+      });
+    }
+  };
+  this.game.webapi.connect();
+
 }
 
 module.exports = InGameState;
