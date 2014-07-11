@@ -82,30 +82,36 @@ var InGameState = function () {
 
       // Register server callbacks.
       var state = this;
-      state.game.webapi.listener = {
-        onConnected: function () {
+      state.game.webapi
+        .on('connected', function () {
           state.game.webapi.createGame();
-        },
-        onOtherPlayerConnectionLost: function () {
+        })
+
+        .on('otherPlayerConnectionLost', function () {
           console.log('hey ! the other guy quit !');
-        },
-        onDisconnected: function () {
+        })
+
+        .on('disconnected', function () {
           console.log('hey ! it is disconnected!');
-        },
-        onGameReady: function () {
+        })
+
+        .on('gameReady', function () {
           console.log('hey ! game is ready !');
           state.game.webapi.sendPlayerReady();
-        },
-        onGameEnded: function () {
+        })
+
+        .on('gameEnded', function () {
           clearInterval(state.intervalId);
           console.log('hey ! game is ended !');
-        },
-        onPacketReceived: function (packet) {
+        })
+
+        .on('packetReceived', function (packet) {
 
           state.opponentCurrentVelocity = packet;
           console.log(packet);
-        },
-        OnGameCountDownStart: function (millis) {
+        })
+
+        .on('gameCountDownStart', function (millis) {
           console.log('hey ! game starts in ' + millis + ' millis !');
           setTimeout(function () {
             state.intervalId = setInterval(function () {
@@ -125,11 +131,13 @@ var InGameState = function () {
             console.log("hey ! you are tapping !");
             state.numOfTouches++;
           });
-        }
-      };
+
+        });
+
       this.game.webapi.connect();
     }
-  }
+  };
 }
+
 
 module.exports = InGameState;
