@@ -1,11 +1,16 @@
+/** Average clicking speed, in numOfClicks/millisecs */
+var averageSpeed = 62 / (10 * 1000);
+
 var InGameState = function () {
 
   this.intervalId = null;
 
   this.numOfTouches = 0;
   this.currentTouchVelocity = 0;
-
   this.opponentCurrentVelocity = 0;
+
+  // in pixel/meter
+  this.unit = 0;
 
   return {
 
@@ -19,6 +24,9 @@ var InGameState = function () {
     },
 
     create: function () {
+
+      this.unit = this.game.height/100;
+
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
       // Create the rope
@@ -71,14 +79,10 @@ var InGameState = function () {
 
       rope.scale.setTo(2.1, 2.1);
 
-
       // Let's animate all that.
       this.game.add.tween(topHand.scale).to({x: -1.05, y: 1.05}, 5000, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
       this.game.add.tween(bottomHand.scale).to({x: 1.05, y: 1.05}, 5000, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
       this.game.add.tween(rope.scale).to({x: rope.scale.x + 0.05, y: rope.scale.y + 0.05}, 7500, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
-
-      this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.NO_SCALE;
-      this.game.scale.startFullScreen();
 
       // Register server callbacks.
       var state = this;
@@ -108,7 +112,6 @@ var InGameState = function () {
         .on('packetReceived', function (packet) {
 
           state.opponentCurrentVelocity = packet;
-          console.log(packet);
         })
 
         .on('gameCountDownStart', function (millis) {
@@ -117,9 +120,9 @@ var InGameState = function () {
             state.intervalId = setInterval(function () {
 
               state.currentTouchVelocity = state.numOfTouches / 50;
-              console.log("your velocity is " + state.currentTouchVelocity);
-              console.log(state.currentTouchVelocity);
-              rope.setAll('body.velocity.y', state.opponentCurrentVelocity * 30 - state.currentTouchVelocity * 1.5 * 1000);
+              console.log ( 1000 * 5 * state.unit * (state.opponentCurrentVelocity - state.currentTouchVelocity));
+
+              rope.setAll('body.velocity.y', (state.opponentCurrentVelocity - state.currentTouchVelocity) * 1000 * 5 * state.unit);
               state.game.webapi.sendPacket(state.currentTouchVelocity);
 
               state.numOfTouches = 0;
@@ -127,17 +130,12 @@ var InGameState = function () {
           }, millis);
 
           state.game.input.onTap.add(function () {
-
-            console.log("hey ! you are tapping !");
             state.numOfTouches++;
           });
 
-        });
-
-      this.game.webapi.connect();
+        }).connect();
     }
   };
 }
-
 
 module.exports = InGameState;

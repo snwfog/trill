@@ -5,6 +5,9 @@ var gameId = 1;
 var players = [];
 var gameInstances = [];
 
+/** Average clicking speed, in numOfClicks/millisecs */
+var averageSpeed = 62 / (10 * 1000);
+
 exports.listen = function(server) {
   var io = socketio.listen(server);
   io.set('log level', 1);
@@ -28,7 +31,9 @@ exports.listen = function(server) {
       setTimeout(function(){
 
           var intervalId = setInterval(function(){
-              socket.emit('serverPacket', Math.random());
+
+              // send an random speed of +- 10% of the averageSpeed
+              socket.emit('serverPacket', averageSpeed + ((Math.random() - 0.5) * 0.2 * averageSpeed));
           }, 100);
 
          setTimeout(function(){
