@@ -25,7 +25,7 @@ var InGameState = function () {
 
     create: function () {
 
-      this.unit = this.game.height/100;
+      this.unit = this.game.height / 100;
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -86,55 +86,92 @@ var InGameState = function () {
 
       // Register server callbacks.
       var state = this;
-      state.game.webapi
-        .on('connected', function () {
-          state.game.webapi.createGame();
-        })
+      this.game.webapi
+          .on('connected', function () {
+            state.game.webapi.createGame();
+          })
 
-        .on('otherPlayerConnectionLost', function () {
-          console.log('hey ! the other guy quit !');
-        })
+          .on('otherPlayerConnectionLost', function () {
+            console.log('hey ! the other guy quit !');
+          })
 
-        .on('disconnected', function () {
-          console.log('hey ! it is disconnected!');
-        })
+          .on('disconnected', function () {
+            console.log('hey ! it is disconnected!');
+          })
 
-        .on('gameReady', function () {
-          console.log('hey ! game is ready !');
-          state.game.webapi.sendPlayerReady();
-        })
+          .on('gameReady', function () {
+            console.log('hey ! game is ready !');
+            state.game.webapi.sendPlayerReady();
+          })
 
-        .on('gameEnded', function () {
-          clearInterval(state.intervalId);
-          console.log('hey ! game is ended !');
-        })
+          .on('gameEnded', function () {
+            clearInterval(state.intervalId);
+            console.log('hey ! game is ended !');
+          })
 
-        .on('packetReceived', function (packet) {
+          .on('packetReceived', function (packet) {
 
-          state.opponentCurrentVelocity = packet;
-        })
+            state.opponentCurrentVelocity = packet;
+          })
 
-        .on('gameCountDownStart', function (millis) {
-          console.log('hey ! game starts in ' + millis + ' millis !');
-          setTimeout(function () {
-            state.intervalId = setInterval(function () {
+          .on('gameCountDownStart', function (millis) {
+            console.log('hey ! game starts in ' + millis + ' millis !');
+            state.playCountDown();
 
-              state.currentTouchVelocity = state.numOfTouches / 50;
-              console.log ( 1000 * 5 * state.unit * (state.opponentCurrentVelocity - state.currentTouchVelocity));
+            setTimeout(function () {
+              state.intervalId = setInterval(function () {
 
-              rope.setAll('body.velocity.y', (state.opponentCurrentVelocity - state.currentTouchVelocity) * 1000 * 5 * state.unit);
-              state.game.webapi.sendPacket(state.currentTouchVelocity);
+                state.currentTouchVelocity = state.numOfTouches / 50;
+                console.log(1000 * 5 * state.unit * (state.opponentCurrentVelocity - state.currentTouchVelocity));
 
-              state.numOfTouches = 0;
-            }, 50);
-          }, millis);
+                rope.setAll('body.velocity.y', (state.opponentCurrentVelocity - state.currentTouchVelocity) * 1000 * 5 * state.unit);
+                state.game.webapi.sendPacket(state.currentTouchVelocity);
 
-          state.game.input.onTap.add(function () {
-            state.numOfTouches++;
+                state.numOfTouches = 0;
+              }, 50);
+            }, millis);
+
+            state.game.input.onTap.add(function () {
+              state.numOfTouches++;
+            });
+
+          }).connect();
+    },
+
+    /**
+     * Plays the countdown text animation
+     */
+    playCountDown: function () {
+
+      var txtStyle = {font: 'Inversionz', fill: "#FFFFFF"};
+
+      var countDownTxt = this.game.add.text(0, 0, '3', txtStyle);
+      countDownTxt.anchor.setTo(0.5, 0.5);
+      countDownTxt.position.setTo(this.game.world.centerX, this.game.world.centerY);
+      countDownTxt.fontSize = 65;
+
+      var state = this;
+      this.game.add.tween(countDownTxt)
+          .to({fontSize: 25}, 1000, Phaser.Easing.Exponential.In, true)
+          .onComplete.add(function () {
+
+            countDownTxt.text = '2';
+            countDownTxt.fontSize = 65;
+            state.game.add.tween(countDownTxt)
+                .to({fontSize: 25}, 1000, Phaser.Easing.Exponential.In, true)
+                .onComplete.add(function () {
+
+                  countDownTxt.text = '1';
+                  countDownTxt.fontSize = 65;
+                  state.game.add.tween(countDownTxt)
+                      .to({fontSize: 25}, 1000, Phaser.Easing.Exponential.In, true)
+                      .onComplete.add(function () {
+                        countDownTxt.text = '';
+                      });
+                });
           });
-
-        }).connect();
     }
+
   };
 }
 

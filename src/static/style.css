@@ -1,0 +1,9 @@
+@font-face {
+  font-family: 'Inversionz';
+  src: url('fonts/Inversionz.otf');
+}
+
+.fontPreload{
+  position:absolute;
+  left:-100px;
+}
