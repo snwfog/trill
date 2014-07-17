@@ -3,9 +3,12 @@ var http = require('http');
 var sio = require('socket.io');
 var path = require('path');
 var mime = require('mime');
+
+var trillServer = require('./trillServer');
+var log = trillServer.log.log; // Normal log of the log object
+
 var connectionCache = {};
 var staticPageCache = {};
-var log = console
 
 var deploy = "./deploy";
 
@@ -17,7 +20,7 @@ var server = http.createServer(function(request, response) {
     filePath = "./" + deploy + "/" + request.url;
   }
 
-  $log("Sending " + filePath + " to the client...");
+  log("Sending " + filePath + " to the client...");
   return serveStatic(response, staticPageCache, filePath);
 });
 
@@ -43,7 +46,7 @@ var serveStatic = function(response, cache, absPath) {
 };
 
 server.listen(8080, "0.0.0.0", function() {
-  return $log("Received new connection");
+  return log("Received new connection");
 });
 
 var sendFile = function(response, filePath, fileContents) {
@@ -61,5 +64,4 @@ var send404 = function(response) {
   return response.end();
 };
 
-var trillServer = require('./trillServer');
 trillServer.listen(server);

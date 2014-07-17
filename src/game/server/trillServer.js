@@ -1,26 +1,5 @@
 var socketio = require('socket.io');
 
-function logFactory(type) {
-  if (type in console) {
-    return function() {
-      var message = Array.prototype.shift.apply(arguments);
-      if (typeof(message) === "string") {
-        Array.prototype.unshift.call(arguments, type.toUpperCase() + ": " + message);
-      }
-
-      console[type].apply(arguments);
-    };
-  }
-
-  throw "Cannot instantiate log for " + type;
-}
-
-var $log = {};
-['warn', 'error', 'info', 'log'].forEach(function(type) {
-  $log[type] = logFactory(type);
-  $log[type]("This is a " + type);
-});
-
 var playerId = 1;
 var gameId = 1000;
 var gameInstances = [];
@@ -101,7 +80,7 @@ exports.listen = function(server) {
   return setInterval((function() {
     var waitingGames;
     if ((waitingGames = hasWaitingGame())) {
-      return $log("There are currently waiting game");
+      return $log.info("There are currently waiting game");
     }
   }), 5000);
 };
@@ -196,3 +175,27 @@ var GameInstance = (function() {
   return GameInstance;
 
 })();
+
+
+function logFactory(type) {
+  if (type in console) {
+    return function() {
+      var message = Array.prototype.shift.apply(arguments);
+      if (typeof(message) === "string") {
+        Array.prototype.unshift.call(arguments, type.toUpperCase() + ": " + message);
+      }
+
+      console[type].apply(arguments);
+    };
+  }
+
+  throw "Cannot instantiate log for " + type;
+}
+
+var $log = {};
+['warn', 'error', 'info', 'log'].forEach(function(type) {
+  $log[type] = logFactory(type);
+  $log[type]("This is a " + type);
+});
+
+exports.log = $log;
