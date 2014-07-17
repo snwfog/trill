@@ -1,12 +1,10 @@
 tmp/
 .idea/
-deploy/js/
 node_modules/
 libs/
 # Logs
 logs
 *.log
-lib
 
 # Runtime data
 pids
