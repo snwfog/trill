@@ -1,21 +1,25 @@
 var socketio = require('socket.io');
 
-var $util = require('util');
-var $log = function() {};
+function logFactory(type) {
+  if (type in console) {
+    return function() {
+      var message = Array.prototype.shift.apply(arguments);
+      if (typeof(message) === "string") {
+        Array.prototype.unshift.call(arguments, type.toUpperCase() + ": " + message);
+      }
 
-var loggerFactory = function(color) {
-  var defaultParameters = {
-    showHidden: true,
-    depth: null,
-    color: color
-  };
-
-  return function(object) {
-    $util.inspect(object, defaultParameters);
+      console[type].apply(arguments);
+    };
   }
-}
-$log.warn = loggerFactory('yellow');
 
+  throw "Cannot instantiate log for " + type;
+}
+
+var $log = {};
+['warn', 'error', 'info', 'log'].forEach(function(type) {
+  $log[type] = logFactory(type);
+  $log[type]("This is a " + type);
+});
 
 var playerId = 1;
 var gameId = 1000;
@@ -30,6 +34,8 @@ var clientIdStorage = {};
 
 exports.listen = function(server) {
   var io = socketio.listen(server);
+  $log.info("Setting log level to %d", 1);
+
   io.set('log level', 1);
 
   io.sockets.on('connection', function(socket) {

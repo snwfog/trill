@@ -5,7 +5,7 @@ var path = require('path');
 var mime = require('mime');
 var connectionCache = {};
 var staticPageCache = {};
-var $log = require('util').log;
+var log = console
 
 var deploy = "./deploy";
 
