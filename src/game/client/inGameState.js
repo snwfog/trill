@@ -3,18 +3,21 @@ var averageSpeed = 62 / (10 * 1000);
 
 var InGameState = function () {
 
-  this.intervalId = null;
-
-  this.numOfTouches = 0;
-  this.currentTouchVelocity = 0;
-  this.opponentCurrentVelocity = 0;
-
-  // in pixel/meter
-  this.unit = 0;
-
   return {
 
+    intervalId : null,
+
+    numOfTouches : 0,
+
+    currentTouchVelocity : 0,
+
+    opponentCurrentVelocity : 0,
+
     prototype: new Phaser.State(),
+
+    rope:null,
+
+    knot:null,
 
     preload: function () {
 
@@ -25,21 +28,22 @@ var InGameState = function () {
 
     create: function () {
 
-      this.unit = this.game.height / 100;
+      // Max speed the rope can go to in either direction, in pixel/secs
+      this.maxSpeed = 0.2 * this.game.height;
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
       // Create the rope
-      var rope = this.game.add.group();
-      rope.enableBody = true;
-      rope.physicsBodyType = Phaser.Physics.ARCADE;
+      this.rope = this.game.add.group();
+      this.rope.enableBody = true;
+      this.rope.physicsBodyType = Phaser.Physics.ARCADE;
 
-      rope.position.x = this.game.width / 2;
-      rope.position.y = this.game.height / 2;
+      this.rope.position.x = this.game.width / 2;
+      this.rope.position.y = this.game.height / 2;
 
       // First add the knot at the center of the screen
-      var knot = rope.create(0, 0, 'rope_knot');
-      knot.anchor.setTo(0.5, 0.5);
+      this.knot = this.rope.create(0, 0, 'rope_knot');
+      this.knot.anchor.setTo(0.5, 0.5);
 
       // Then add rope parts that extend from the knot to the top and
       // bottom of the screen
@@ -47,18 +51,18 @@ var InGameState = function () {
       var ropePartImg = this.game.cache.getImage('rope_part');
 
       var ropeTop = this.game.add.tileSprite(0, 0, ropePartImg.width, ropeHeight, 'rope_part');
-      rope.addChild(ropeTop);
+      this.rope.addChild(ropeTop);
       this.game.physics.enable(ropeTop, Phaser.Physics.ARCADE);
       ropeTop.enableBody = true;
       ropeTop.anchor.setTo(0.5, 1);
-      ropeTop.position.setTo(knot.x, knot.y - knot.height / 2);
+      ropeTop.position.setTo(this.knot.x, this.knot.y - this.knot.height / 2);
 
       var ropeBottom = this.game.add.tileSprite(0, 0, ropePartImg.width, ropeHeight, 'rope_part');
-      rope.addChild(ropeBottom);
+      this.rope.addChild(ropeBottom);
       this.game.physics.enable(ropeBottom, Phaser.Physics.ARCADE);
       ropeBottom.enableBody = true;
       ropeBottom.anchor.setTo(0.5, 0);
-      ropeBottom.position.setTo(knot.x, knot.y + knot.height / 2);
+      ropeBottom.position.setTo(this.knot.x, this.knot.y + this.knot.height / 2);
 
       // Create top hand
       var topHand = this.game.add.sprite(0, 0, 'hand');
@@ -77,12 +81,12 @@ var InGameState = function () {
       bottomHand.position.x = this.game.width / 2;
       bottomHand.position.y = this.game.height - bottomHand.height / 2;
 
-      rope.scale.setTo(2.1, 2.1);
+      this.rope.scale.setTo(2.1, 2.1);
 
       // Let's animate all that.
       this.game.add.tween(topHand.scale).to({x: -1.05, y: 1.05}, 5000, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
       this.game.add.tween(bottomHand.scale).to({x: 1.05, y: 1.05}, 5000, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
-      this.game.add.tween(rope.scale).to({x: rope.scale.x + 0.05, y: rope.scale.y + 0.05}, 7500, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
+      this.game.add.tween(this.rope.scale).to({x: this.rope.scale.x + 0.05, y: this.rope.scale.y + 0.05}, 7500, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
 
       // Register server callbacks.
       var state = this;
@@ -106,7 +110,11 @@ var InGameState = function () {
 
           .on('gameEnded', function () {
             clearInterval(state.intervalId);
+            state.rope.setAll('body.acceleration.y', 0);
+            state.rope.setAll('body.velocity.y', 0);
             console.log('hey ! game is ended !');
+
+
           })
 
           .on('packetReceived', function (packet) {
@@ -118,13 +126,13 @@ var InGameState = function () {
             console.log('hey ! game starts in ' + millis + ' millis !');
             state.playCountDown();
 
+            state.rope.setAll('body.drag.y', 0.1 * state.game.height);
             setTimeout(function () {
               state.intervalId = setInterval(function () {
 
                 state.currentTouchVelocity = state.numOfTouches / 50;
-                console.log(1000 * 5 * state.unit * (state.opponentCurrentVelocity - state.currentTouchVelocity));
 
-                rope.setAll('body.velocity.y', (state.opponentCurrentVelocity - state.currentTouchVelocity) * 1000 * 5 * state.unit);
+                state.rope.setAll('body.acceleration.y', (state.opponentCurrentVelocity - state.currentTouchVelocity) * 1000 * 0.15 * state.game.height);
                 state.game.webapi.sendPacket(state.currentTouchVelocity);
 
                 state.numOfTouches = 0;
@@ -136,6 +144,12 @@ var InGameState = function () {
             });
 
           }).connect();
+    },
+
+    update:function(){
+      if (this.rope !== undefined){
+        this.rope.setAll('body.velocity.y', Phaser.Math.clamp(this.knot.body.velocity.y, -this.maxSpeed, this.maxSpeed));
+      }
     },
 
     /**
