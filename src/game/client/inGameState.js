@@ -44,6 +44,8 @@ var InGameState = function () {
       // First add the knot at the center of the screen
       this.knot = this.rope.create(0, 0, 'rope_knot');
       this.knot.anchor.setTo(0.5, 0.5);
+      this.knot.body.collideWorldBounds = true;
+      this.knot.body.bounce = 0.5;
 
       // Then add rope parts that extend from the knot to the top and
       // bottom of the screen
@@ -132,7 +134,7 @@ var InGameState = function () {
 
                 state.currentTouchVelocity = state.numOfTouches / 50;
 
-                state.rope.setAll('body.acceleration.y', (state.opponentCurrentVelocity - state.currentTouchVelocity) * 1000 * 0.15 * state.game.height);
+                state.rope.setAll('body.acceleration.y', (state.opponentCurrentVelocity - state.currentTouchVelocity) * 1000 * 0.20 * state.game.height);
                 state.game.webapi.sendPacket(state.currentTouchVelocity);
 
                 state.numOfTouches = 0;
