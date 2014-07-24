@@ -21,7 +21,6 @@ var InGameState = function () {
 
     preload: function () {
 
-      this.game.load.image('hand', 'static/imgs/hand.png');
       this.game.load.image('rope_knot', 'static/imgs/rope_knot.png');
       this.game.load.image('rope_part', 'static/imgs/rope_middle.png');
     },
@@ -66,29 +65,10 @@ var InGameState = function () {
       ropeBottom.anchor.setTo(0.5, 0);
       ropeBottom.position.setTo(this.knot.x, this.knot.y + this.knot.height / 2);
 
-      // Create top hand
-      var topHand = this.game.add.sprite(0, 0, 'hand');
-      topHand.anchor.setTo(0.34, 0.5);
-      topHand.scale.x = -1;
-
-      // Display hand at top middle of the stage
-      topHand.position.x = this.game.width / 2;
-      topHand.position.y = topHand.height / 2;
-
-      // Create bottom hand
-      var bottomHand = this.game.add.sprite(0, 0, 'hand');
-      bottomHand.anchor.setTo(0.34, 0.5);
-
-      // Display hand at bottom middle of the stage
-      bottomHand.position.x = this.game.width / 2;
-      bottomHand.position.y = this.game.height - bottomHand.height / 2;
-
       this.rope.scale.setTo(2.1, 2.1);
 
       // Let's animate all that.
-      this.game.add.tween(topHand.scale).to({x: -1.05, y: 1.05}, 5000, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
-      this.game.add.tween(bottomHand.scale).to({x: 1.05, y: 1.05}, 5000, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
-      this.game.add.tween(this.rope.scale).to({x: this.rope.scale.x + 0.05, y: this.rope.scale.y + 0.05}, 7500, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
+      this.game.add.tween(this.rope.scale).to({x: this.rope.scale.x + 0.1, y: this.rope.scale.y + 0.1}, 7500, Phaser.Easing.Bounce.InOut, true, 1000 * Math.random(), Number.MAX_VALUE, true);
 
       // Register server callbacks.
       var state = this;
@@ -115,7 +95,6 @@ var InGameState = function () {
             state.rope.setAll('body.acceleration.y', 0);
             state.rope.setAll('body.velocity.y', 0);
             console.log('hey ! game is ended !');
-
 
           })
 
