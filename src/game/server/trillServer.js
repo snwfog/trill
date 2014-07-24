@@ -1,7 +1,6 @@
 var socketio = require('socket.io');
 
-var playerId = 1;
-var gameId = 1000;
+var gameId = 1;
 var gameInstances = [];
 
 
@@ -9,7 +8,8 @@ var gameInstances = [];
 var averageSpeed = 62 / (10 * 1000);
 
 // clientId -> socketId store on the server side
-var clientIdStorage = {};
+var players = [];
+var playerStorage = {};
 
 exports.listen = function(server) {
   var io = socketio.listen(server);
@@ -18,65 +18,66 @@ exports.listen = function(server) {
   io.set('log level', 1);
 
   io.sockets.on('connection', function(socket) {
-    socket.on('requestId', function() {
-      // Associate this player with this current playerId
-      var newPlayerId = playerId++;
-      // Transparent to the client, we'll just give the same cached Id
-      var newPlayerId = isReconnect(socket) ? getPreviousPlayerId(socket) : playerId++;
-      $log.warn("A player has request for a game Id.");
-      if (isReconnect(socket)) {
-        $log("WARN: Player is attempting for a reconnection!")
-        var player = clientIdStorage[getPreviousPlayerId(socket)] || new Player(socket);
-        // FIXME: Constructor is missing a parameter here...
-        // FIXME: Actually the constructor is totally wrong here...
-      }
-
-      // Else its just a new player request
-      // Associate in the local server side cache
-      clientIdStorage[newPlayerId] = player;
-      return socket.emit('newId', newPlayerId);
-    });
-
-
-    socket.on('createGame', function() {
-      return socket.emit('gameReady');
-    });
+//    socket.on('requestId', function() {
+//      // Associate this player with this current playerId
+//      var newPlayerId = playerId++;
+//      // Transparent to the client, we'll just give the same cached Id
+//      var newPlayerId = isReconnect(socket) ? getPreviousPlayerId(socket) : playerId++;
+//      $log.warn("A player has request for a game Id.");
+//      if (isReconnect(socket)) {
+//        $log("WARN: Player is attempting for a reconnection!")
+//        var player = clientIdStorage[getPreviousPlayerId(socket)] || new Player(socket);
+//        // FIXME: Constructor is missing a parameter here...
+//        // FIXME: Actually the constructor is totally wrong here...
+//      }
+//
+//      // Else its just a new player request
+//      // Associate in the local server side cache
+//      clientIdStorage[newPlayerId] = player;
+//      return socket.emit('newId', newPlayerId);
+//    });
 
 
-
-    socket.on('joinGame', function() {
-      return socket.emit('gameReady');
-    });
+//    socket.on('createGame', function() {
+//      return socket.emit('gameReady');
+//    });
 
 
 
-    socket.on('sendPacket', function(data) {
-      return socket.broadcast.emit('packet Received', data);
-    });
+//    socket.on('joinGame', function() {
+//      return socket.emit('gameReady');
+//    });
+
+
+//    socket.on('sendPacket', function(data) {
+//      return socket.broadcast.emit('packet Received', data);
+//    });
 
 
 
-    socket.on('roundReady', function() {
+//    socket.on('roundReady', function() {
+//
+//      socket.emit('gameCountDownStart', 3 * 1000);
+//
+//      setTimeout(function(){
+//
+//          var intervalId = setInterval(function(){
+//
+//              // send an random speed of +- 10% of the averageSpeed
+//              socket.emit('serverPacket', averageSpeed + ((Math.random() - 0.5) * 0.2 * averageSpeed));
+//          }, 100);
+//
+//         setTimeout(function(){
+//             clearInterval(intervalId);
+//             socket.emit('gameEnded');
+//         }, 5 * 1000);
+//
+//      }, 3 * 1000);
+//    });
 
-      socket.emit('gameCountDownStart', 3 * 1000);
-
-      setTimeout(function(){
-
-          var intervalId = setInterval(function(){
-
-              // send an random speed of +- 10% of the averageSpeed
-              socket.emit('serverPacket', averageSpeed + ((Math.random() - 0.5) * 0.2 * averageSpeed));
-          }, 100);
-
-         setTimeout(function(){
-             clearInterval(intervalId);
-             socket.emit('gameEnded');
-         }, 5 * 1000);
-
-      }, 3 * 1000);
-    });
     return getGameInstance(socket);
   });
+
   return setInterval((function() {
     var waitingGames;
     if ((waitingGames = hasWaitingGame())) {
@@ -109,7 +110,7 @@ var getGameInstance = function(socket) {
     instance = new GameInstance(gameId++);
   }
 
-  $log("INFO: There are currently " + players.length
+  $log.info("INFO: There are currently " + players.length
       + " players in " + gameInstances.length + " games.");
 
   instance.assignPlayerToGame(p);
@@ -117,9 +118,9 @@ var getGameInstance = function(socket) {
 };
 
 var getNextWaitingGame = function() {
-  var gameInstance, _i, _len;
-  for (_i = 0, _len = gameInstances.length; _i < _len; _i++) {
-    gameInstance = gameInstances[_i];
+  var gameInstance, i, len;
+  for (i = 0, len = gameInstances.length; i < len; i++) {
+    gameInstance = gameInstances[i];
     if (gameInstance.isWaiting()) {
       return gameInstance;
     }
@@ -133,6 +134,9 @@ var Player = (function() {
     this.isExpired = false;
 
     this.connectTime = Date.now(); // unix time, cuz who cares? its just a time id
+
+    $log.info("Adding new player " + this.socketId + " to the player array");
+    players.push(this);
   }
 
   Player.prototype.id = Player.socketId;
