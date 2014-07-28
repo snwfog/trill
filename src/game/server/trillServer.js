@@ -11,15 +11,14 @@ var averageSpeed = 62 / (10 * 1000);
 var players = [];
 var playerStorage = {};
 
-exports.listen = function (server) {
+exports.listen = function(server) {
   var io = socketio.listen(server);
   $log.info("Setting log level to %d", 1);
 
   io.set('log level', 1);
 
-  io.sockets.on('connection', function (socket) {
-    socket.on('requestId', function () {
-      $log.info("Id requested");
+  io.sockets.on('connection', function(socket) {
+//    socket.on('requestId', function() {
 //      // Associate this player with this current playerId
 //      var newPlayerId = playerId++;
 //      // Transparent to the client, we'll just give the same cached Id
@@ -36,12 +35,13 @@ exports.listen = function (server) {
 //      // Associate in the local server side cache
 //      clientIdStorage[newPlayerId] = player;
 //      return socket.emit('newId', newPlayerId);
-    });
+//    });
 
 
 //    socket.on('createGame', function() {
 //      return socket.emit('gameReady');
 //    });
+
 
 
 //    socket.on('joinGame', function() {
@@ -52,6 +52,7 @@ exports.listen = function (server) {
 //    socket.on('sendPacket', function(data) {
 //      return socket.broadcast.emit('packet Received', data);
 //    });
+
 
 
 //    socket.on('roundReady', function() {
@@ -77,7 +78,7 @@ exports.listen = function (server) {
     return getGameInstance(socket);
   });
 
-  return setInterval((function () {
+  return setInterval((function() {
     var waitingGames;
     if ((waitingGames = hasWaitingGame())) {
       return $log.info("There are currently waiting game");
@@ -85,17 +86,17 @@ exports.listen = function (server) {
   }), 5000);
 };
 
-var hasWaitingGame = function () {
-  return (gameInstances.filter(function (game) {
+var hasWaitingGame = function() {
+  return (gameInstances.filter(function(game) {
     return game.isWaiting();
   })).length !== 0;
 };
 
-var isReconnect = function (socket) {
+var isReconnect = function(socket) {
   return true; // FIXME: Mock
 }
 
-var getGameInstance = function (socket) {
+var getGameInstance = function(socket) {
   var instance;
   var p = new Player(socket.id);
 
@@ -116,7 +117,7 @@ var getGameInstance = function (socket) {
   return gameInstances.push(instance);
 };
 
-var getNextWaitingGame = function () {
+var getNextWaitingGame = function() {
   var gameInstance, i, len;
   for (i = 0, len = gameInstances.length; i < len; i++) {
     gameInstance = gameInstances[i];
@@ -126,7 +127,7 @@ var getNextWaitingGame = function () {
   }
 };
 
-var Player = (function () {
+var Player = (function() {
   function Player(socketId, gameInstance) {
     this.socketId = socketId;
     this.gameInstance = gameInstance;
@@ -145,26 +146,26 @@ var Player = (function () {
 
 })();
 
-var GameInstance = (function () {
+var GameInstance = (function() {
   function GameInstance(id, playerOne, playerTwo) {
     this.id = id;
     this.playerOne = playerOne;
     this.playerTwo = playerTwo;
   }
 
-  GameInstance.prototype.isWaiting = function () {
+  GameInstance.prototype.isWaiting = function() {
     return this.playerOne === void 0 || this.playerTwo === void 0;
   };
 
-  GameInstance.prototype.isEmpty = function () {
+  GameInstance.prototype.isEmpty = function() {
     return this.playerOne === void 0 && this.playerTwo === void 0;
   };
 
-  GameInstance.prototype.isFull = function () {
+  GameInstance.prototype.isFull = function() {
     return this.playerOne !== void 0 && this.playerTwo !== void 0;
   };
 
-  GameInstance.prototype.assignPlayerToGame = function (player) {
+  GameInstance.prototype.assignPlayerToGame = function(player) {
     console.log("Assigning " + player.socketId + " to a game instance " + this.id);
     if (this.playerOne === void 0) {
       return this.playerOne = player;
@@ -182,7 +183,7 @@ var GameInstance = (function () {
 
 function logFactory(type) {
   if (type in console) {
-    return function () {
+    return function() {
       var message = Array.prototype.shift.apply(arguments);
       if (typeof(message) === "string") {
         Array.prototype.unshift.call(arguments, type.toUpperCase() + ": " + message);
@@ -196,7 +197,7 @@ function logFactory(type) {
 }
 
 var $log = {};
-['warn', 'error', 'info', 'log'].forEach(function (type) {
+['warn', 'error', 'info', 'log'].forEach(function(type) {
   $log[type] = logFactory(type);
   $log[type]("This is a " + type);
 });
