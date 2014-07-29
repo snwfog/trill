@@ -5,26 +5,30 @@ var path = require('path');
 var mime = require('mime');
 
 var trillServer = require('./trillServer');
-var log = trillServer.log.log; // Normal log of the log object
+var log = console.log;
 
 var connectionCache = {};
 var staticPageCache = {};
 
-var deploy = "src";
+// Path assumption:
+//  src -> all js created by us
+//  lib -> all deps created by other (valid bower deps)
+//  style -> static style sheets
 
 var server = http.createServer(function(request, response) {
   var filePath = false;
   if (request.url === '/') {
-    filePath = "./" + deploy + "/index.html";
+    filePath = "./src/static/index.html";
   } else {
-    filePath = "./" + deploy + "/" + request.url;
+    filePath = "./src" + request.url;
   }
 
   log("Sending " + filePath + " to the client...");
-  return serveStatic(response, staticPageCache, filePath);
+  return serveFile(response, staticPageCache, filePath);
 });
 
-var serveStatic = function(response, cache, absPath) {
+var serveFile = function(response, cache, absPath) {
+  log("Sending file %s", absPath);
   if (cache[absPath]) {
     return sendFile(response, absPath, cache[absPath]);
   } else {
