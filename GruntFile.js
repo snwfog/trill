@@ -18,50 +18,18 @@ module.exports = function (grunt) {
     },
 
     copy: {
-      client: {
+      lib: {
         files: [
           {
-            expand: true,
-            flatten: false,
-            cwd: 'src/',
-            src: [
-              'static/**/*.css',
-              'static/**/*.png',
-              'static/**/*.otf'],
-            dest: './deploy'
+            expand: true, flatten: true, cwd: 'bower_components',
+            src: ['jquery/dist/jquery.min.js'
+              , 'phaser/phaser.min.js'
+              , 'socket.io-client/socket.io.js'
+            ],
+            dest: './src/lib'
           }
         ]
       },
-      'client-libs': {
-        files: [
-          {
-            expand: true,
-            flatten: true,
-            src: ['./src/lib/*'],
-            dest: './deploy/lib'
-          }
-        ]
-      },
-      server: {
-        files: [
-          {
-            expand: true,
-            flatten: true,
-            src: ['src/game/server/**/*.js'],
-            dest: 'deploy/server'
-          }
-        ]
-      },
-      main: {
-        files: [
-          {
-            expand: true,
-            flatten: true,
-            src: ['src/static/*.html'],
-            dest: 'deploy'
-          }
-        ]
-      }
     },
 
     bower: {
@@ -82,7 +50,6 @@ module.exports = function (grunt) {
     },
   })
 
-  grunt.registerTask('default', ['clean', 'concat'])
-  grunt.registerTask('open-game', ['default', 'open'])
-  grunt.registerTask('concat', ['browserify', 'bower', 'copy', 'injector'])
+  grunt.registerTask('default', ['copy:lib'])
+  grunt.registerTask('concat', ['browserify', 'bower', 'copy'])
 }

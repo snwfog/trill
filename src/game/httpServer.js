@@ -10,7 +10,7 @@ var log = trillServer.log.log; // Normal log of the log object
 var connectionCache = {};
 var staticPageCache = {};
 
-var deploy = "./deploy";
+var deploy = "src";
 
 var server = http.createServer(function(request, response) {
   var filePath = false;

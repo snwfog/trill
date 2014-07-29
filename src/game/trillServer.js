@@ -13,10 +13,6 @@ var playerStorage = {};
 
 exports.listen = function (server) {
   var io = socketio.listen(server);
-  $log.info("Setting log level to %d", 1);
-
-  io.set('log level', 1);
-
   io.sockets.on('connection', function (socket) {
     socket.on('requestId', function () {
       $log.info("Id requested");

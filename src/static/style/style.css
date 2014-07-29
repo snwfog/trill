@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Inversionz';
-  src: url('fonts/Inversionz.otf');
+  src: url('../font/Inversionz.otf');
 }
 
 .fontPreload{

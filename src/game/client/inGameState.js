@@ -21,8 +21,8 @@ var InGameState = function () {
 
     preload: function () {
 
-      this.game.load.image('rope_knot', 'static/imgs/rope_knot.png');
-      this.game.load.image('rope_part', 'static/imgs/rope_middle.png');
+      this.game.load.image('rope_knot', 'static/img/rope_knot.png');
+      this.game.load.image('rope_part', 'static/img/rope_middle.png');
     },
 
     create: function () {
