@@ -21,6 +21,8 @@ var InGameState = function () {
 
     preload: function () {
 
+      this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
       this.game.load.image('rope_knot', 'static/imgs/rope_knot.png');
       this.game.load.image('rope_part', 'static/imgs/rope_middle.png');
     },
