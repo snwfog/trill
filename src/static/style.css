@@ -5,7 +5,7 @@
 
 .fontPreload{
   position:absolute;
-  left:-100px;
+  display:none;
 }
 
 #game canvas{
