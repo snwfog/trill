@@ -15,7 +15,7 @@ var initDimensions = {
 var game = new Phaser.Game(initDimensions.w, initDimensions.h, Phaser.AUTO, 'game', null, false, false);
 
 game['webapi'] = new webapi({
-  url: 'https://tlyivpvrap.localtunnel.me'
+  url: 'http://localhost:8080'
 });
 
 $(window).resize(function(){
