@@ -1,6 +1,4 @@
-var webapi = require('./webapi.js');
-var ingamestate = require('./inGameState.js');
-
+require('./trill.js')
 
 var maxDimensions = {
   w:2048,
@@ -14,9 +12,11 @@ var initDimensions = {
 
 var game = new Phaser.Game(initDimensions.w, initDimensions.h, Phaser.AUTO, 'game', null, false, false);
 
-game['webapi'] = new webapi({
+game.webapi = new Trill.WebApi({
   url: 'http://localhost:8080'
 });
+
+game.state.add('inGameState', new Trill.InGameState(), true);
 
 $(window).resize(function(){
   var width = Math.min (maxDimensions.w, $(window).width());
@@ -32,6 +32,6 @@ $(window).resize(function(){
     game.renderer.resize(width, height);
   }
 
-});
+//  game.state.getCurrentState().onResize({width: width, height:height});
 
-game.state.add('inGameState', new ingamestate(), true);
+});

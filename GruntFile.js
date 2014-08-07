@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
 
-  grunt.loadNpmTasks('grunt-bower-task')
+  grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -109,9 +109,9 @@ module.exports = function (grunt) {
     },
 
     clean: ["./deploy"]
-  })
+  });
 
-  grunt.registerTask('default', ['clean', 'concat'])
-  grunt.registerTask('open-game', ['default', 'open'])
-  grunt.registerTask('concat', ['browserify', 'bower', 'copy', 'injector'])
+  grunt.registerTask('default', ['clean', 'concat']);
+  grunt.registerTask('open-game', ['default', 'open']);
+  grunt.registerTask('concat', ['browserify', 'bower', 'copy', 'injector']);
 }
