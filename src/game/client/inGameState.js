@@ -1,3 +1,5 @@
+var State = require('./state.js');
+
 /** Average clicking speed, in numOfClicks/millisecs */
 var averageSpeed = 62 / (10 * 1000);
 
@@ -13,11 +15,13 @@ var InGameState = function () {
 
     opponentCurrentVelocity : 0,
 
-    prototype: new Phaser.State(),
+    prototype: new State(),
 
     rope:null,
 
     knot:null,
+
+    countDownText:null,
 
     preload: function () {
 
@@ -33,7 +37,7 @@ var InGameState = function () {
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
       // Create the rope
-      this.rope = this.game.add.group();
+      this.rope = this.game.add.group(undefined, 'group', true);
       this.rope.enableBody = true;
       this.rope.physicsBodyType = Phaser.Physics.ARCADE;
 
@@ -140,33 +144,37 @@ var InGameState = function () {
 
       var txtStyle = {font: 'Inversionz', fill: "#FFFFFF"};
 
-      var countDownTxt = this.game.add.text(0, 0, '3', txtStyle);
-      countDownTxt.anchor.setTo(0.5, 0.5);
-      countDownTxt.position.setTo(this.game.world.centerX, this.game.world.centerY);
-      countDownTxt.fontSize = 65;
+      this.countDownTxt = this.game.add.text(0, 0, '3', txtStyle);
+      this.countDownTxt.anchor.setTo(0.5, 0.5);
+      this.countDownTxt.position.setTo(this.game.world.centerX, this.game.world.centerY);
+      this.countDownTxt.fontSize = 65;
 
       var state = this;
-      this.game.add.tween(countDownTxt)
+      this.game.add.tween(state.countDownTxt)
           .to({fontSize: 25}, 1000, Phaser.Easing.Exponential.In, true)
           .onComplete.add(function () {
 
-            countDownTxt.text = '2';
-            countDownTxt.fontSize = 65;
-            state.game.add.tween(countDownTxt)
+            state.countDownTxt.text = '2';
+            state.countDownTxt.fontSize = 65;
+            state.game.add.tween(state.countDownTxt)
                 .to({fontSize: 25}, 1000, Phaser.Easing.Exponential.In, true)
                 .onComplete.add(function () {
 
-                  countDownTxt.text = '1';
-                  countDownTxt.fontSize = 65;
-                  state.game.add.tween(countDownTxt)
+                  state.countDownTxt.text = '1';
+                  state.countDownTxt.fontSize = 65;
+                  state.game.add.tween(state.countDownTxt)
                       .to({fontSize: 25}, 1000, Phaser.Easing.Exponential.In, true)
                       .onComplete.add(function () {
-                        countDownTxt.text = '';
+                        state.countDownTxt.text = '';
                       });
                 });
           });
-    }
+    },
 
+    onResize: function(dimensions){
+      this.rope.position.x = dimensions.width/2;
+      this.rope.setAll('body.acceleration.y', (this.opponentCurrentVelocity - this.currentTouchVelocity) * 1000 * 0.20 * this.game.height)
+    }
   };
 }
 

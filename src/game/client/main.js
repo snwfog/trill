@@ -26,12 +26,14 @@ $(window).resize(function(){
   game.height = height;
   game.stage.bounds.width = width;
   game.stage.bounds.height = height;
+  game.camera.width = width;
+  game.camera.height = height;
 
   if (game.renderType === Phaser.WEBGL)
   {
     game.renderer.resize(width, height);
   }
 
-//  game.state.getCurrentState().onResize({width: width, height:height});
+  game.state.getCurrentState().onResize({width: width, height:height});
 
 });
