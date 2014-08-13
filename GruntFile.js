@@ -74,8 +74,9 @@ module.exports = function (grunt) {
           'deploy/trillClient.js': ['src/game/client/**/*.js']
         }
       }
-    },
+    }
+  });
 
-  grunt.registerTask('default', ['copy:lib'])
+  grunt.registerTask('default', ['copy:lib']);
   grunt.registerTask('concat', ['browserify', 'bower', 'copy'])
 }
