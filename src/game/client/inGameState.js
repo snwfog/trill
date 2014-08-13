@@ -1,3 +1,5 @@
+var State = require('./state.js');
+
 /** Average clicking speed, in numOfClicks/millisecs */
 var averageSpeed = 62 / (10 * 1000);
 
@@ -13,16 +15,18 @@ var InGameState = function () {
 
     opponentCurrentVelocity : 0,
 
-    prototype: new Phaser.State(),
+    prototype: new State(),
 
     rope:null,
 
     knot:null,
 
+    countDownText:null,
+
     preload: function () {
 
-      this.game.load.image('rope_knot', 'static/img/rope_knot.png');
-      this.game.load.image('rope_part', 'static/img/rope_middle.png');
+      this.game.load.image('rope_knot', 'static/imgs/rope_knot.png');
+      this.game.load.image('rope_part', 'static/imgs/rope_middle.png');
     },
 
     create: function () {
@@ -33,7 +37,7 @@ var InGameState = function () {
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
       // Create the rope
-      this.rope = this.game.add.group();
+      this.rope = this.game.add.group(undefined, 'group', true);
       this.rope.enableBody = true;
       this.rope.physicsBodyType = Phaser.Physics.ARCADE;
 
@@ -140,202 +144,38 @@ var InGameState = function () {
 
       var txtStyle = {font: 'Inversionz', fill: "#FFFFFF"};
 
-      var countDownTxt = this.game.add.text(0, 0, '3', txtStyle);
-      countDownTxt.anchor.setTo(0.5, 0.5);
-      countDownTxt.position.setTo(this.game.world.centerX, this.game.world.centerY);
-      countDownTxt.fontSize = 65;
+      this.countDownTxt = this.game.add.text(0, 0, '3', txtStyle);
+      this.countDownTxt.anchor.setTo(0.5, 0.5);
+      this.countDownTxt.position.setTo(this.game.world.centerX, this.game.world.centerY);
+      this.countDownTxt.fontSize = 65;
 
       var state = this;
-      this.game.add.tween(countDownTxt)
+      this.game.add.tween(state.countDownTxt)
           .to({fontSize: 25}, 1000, Phaser.Easing.Exponential.In, true)
           .onComplete.add(function () {
 
-            countDownTxt.text = '2';
-            countDownTxt.fontSize = 65;
-            state.game.add.tween(countDownTxt)
+            state.countDownTxt.text = '2';
+            state.countDownTxt.fontSize = 65;
+            state.game.add.tween(state.countDownTxt)
                 .to({fontSize: 25}, 1000, Phaser.Easing.Exponential.In, true)
                 .onComplete.add(function () {
 
-                  countDownTxt.text = '1';
-                  countDownTxt.fontSize = 65;
-                  state.game.add.tween(countDownTxt)
+                  state.countDownTxt.text = '1';
+                  state.countDownTxt.fontSize = 65;
+                  state.game.add.tween(state.countDownTxt)
                       .to({fontSize: 25}, 1000, Phaser.Easing.Exponential.In, true)
                       .onComplete.add(function () {
-                        countDownTxt.text = '';
+                        state.countDownTxt.text = '';
                       });
                 });
           });
-    }
+    },
 
+    onResize: function(dimensions){
+      this.rope.position.x = dimensions.width/2;
+      this.rope.setAll('body.acceleration.y', (this.opponentCurrentVelocity - this.currentTouchVelocity) * 1000 * 0.20 * this.game.height)
+    }
   };
-};
+}
 
-/*
- This is a simple state template to use for getting a Phaser game up
- and running quickly. Simply add your own game logic to the default
- state object or delete it and make your own.
- */
-var state = {
-  init: function () {
-    var style, t, text;
-    text = "Phaser Version " + Phaser.VERSION + " works! Nice !";
-    style = {
-      font: "24px Arial",
-      fill: "#fff",
-      align: "center"
-    };
-    t = game.add.text(this.world.centerX, this.world.centerY, text, style);
-    t.anchor.setTo(0.5, 0.5);
-  },
-  preload: function () {
-  },
-  create: function () {
-  },
-  update: function () {
-  }
-};
-
-var game = new Phaser.Game(800, 800, Phaser.AUTO, '', null, false, false);
-
-game['webapi'] = new WebApi({
-  url: 'http://localhost:8080/'
-});
-
-game.state.add('inGameState', new InGameState(), true);
-
-var WebApi = function (config) {
-
-  this.config = config;
-
-  /**
-   @_listener can define the following callbacks:
-
-   connected
-   disconnected
-   gameReady
-   gameEnded
-   packetReceived (packet)
-   disconnected
-   otherPlayerConnectionLost
-   gameCountDownStart
-   */
-  this._listener = {};
-
-  this._socketId = null;
-
-  this._socket = null;
-};
-
-WebApi.prototype.constructor = WebApi;
-
-WebApi.prototype = {
-  /**
-   Starts a persistent connection with server.
-   */
-  connect: function () {
-
-    var api = this;
-    api._socket = io(this.config.url);
-
-    api._socket.on('connect', function () {
-      console.log('connected');
-      api._socket.emit('requestId');
-    });
-
-    api._socket.on('disconnect', function () {
-      console.log('disconnected');
-      api._fireEvent('disconnected');
-    });
-
-    api._socket.on('newId', function (id) {
-      console.log('new id created :' + id);
-      api._socketId = id;
-      api._fireEvent('connected');
-    });
-
-    api._socket.on('gameReady', function (data) {
-      console.log('event gameready fired')
-      api._fireEvent('gameReady')
-    });
-
-    api._socket.on('serverPacket', function (data) {
-      console.log('event serverPacket fired')
-      api._fireEvent('packetReceived', data)
-    });
-
-    api._socket.on('gameEnded', function (data) {
-      console.log('event gameended fired')
-      api._fireEvent('gameEnded', data)
-    });
-
-    api._socket.on('otherPlayerConnectionLost', function (data) {
-      console.log('event otherplayerconnectionlost fired')
-      api._fireEvent('otherPlayerConnectionLost')
-    });
-
-    api._socket.on('gameCreated', function (data) {
-      console.log('event game created fired')
-      console.log(data)
-      api._fireEvent('gameCreated', data)
-    });
-
-    api._socket.on('gameCountDownStart', function (data) {
-      api._fireEvent('gameCountDownStart', data)
-    });
-  },
-
-  /**
-   Creates game. First parameter of callback is the gamecode, second is
-   an error.
-   */
-  createGame: function () {
-    this._socket.emit('createGame')
-  },
-
-  /**
-   Starts a persistent connection with the server
-   and join the game with the specified gamecode.
-   Sends packet to the server. Server should emit either a
-   gameReady response or an error response if game is not joinable.
-   */
-  join: function () {
-    this._socket.emit('joinGame')
-  },
-
-  /**
-   Sends packet to the server. Server should not emit
-   an event in response
-   */
-  sendPacket: function (packet) {
-    this._socket.emit('sendPacket', packet)
-  },
-
-  /**
-   Emits message to notify the server that game start counter can begin.
-   Server should answer with OnGameCountDown event
-   */
-  sendPlayerReady: function () {
-    this._socket.emit('roundReady')
-  },
-
-  on: function(eventName, callback){
-    this._listener[eventName] = callback;
-    return this;
-  },
-
-  /**
-   Requests a socketId, server should send a 'newId' events
-   in response.
-   */
-  _requestId: function () {
-    this._socket.emit('requestId')
-  },
-
-  _fireEvent: function (eventName, data) {
-    console.log(this._listener)
-    if (this._listener[eventName] != null) {
-      this._listener[eventName](data)
-    }
-  }
-};
-
+module.exports = InGameState;
