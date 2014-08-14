@@ -29,7 +29,7 @@ module.exports = function (grunt) {
             dest: './src/lib'
           }
         ]
-      },
+      }
     },
 
     bower: {
@@ -78,5 +78,6 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('default', ['copy:lib']);
+  grunt.registerTask('client', ['copy:lib']);
   grunt.registerTask('concat', ['browserify', 'bower', 'copy'])
 }
