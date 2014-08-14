@@ -17,11 +17,13 @@ var staticPageCache = {};
 
 var server = http.createServer(function(request, response) {
   var filePath = false;
-  if (request.url === '/') {
-    filePath = "./src/static/index.html";
-  } else {
-    filePath = "./src" + request.url;
-  }
+//  if (request.url === '/') {
+//    filePath = "./src/static/index.html";
+//  } else {
+//    filePath = "./src" + request.url;
+//  }
+
+  filePath = "./deploy"  + request.url;
 
   log("Sending " + filePath + " to the client...");
   return serveFile(response, staticPageCache, filePath);

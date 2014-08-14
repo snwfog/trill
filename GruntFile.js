@@ -18,15 +18,47 @@ module.exports = function (grunt) {
     },
 
     copy: {
-      lib: {
+      client: {
         files: [
           {
-            expand: true, flatten: true, cwd: 'bower_components',
-            src: ['jquery/dist/jquery.min.js'
-              , 'phaser/phaser.min.js'
-              , 'socket.io-client/socket.io.js'
-            ],
-            dest: './src/lib'
+            expand: true,
+            flatten: false,
+            cwd: 'src/',
+            src: [
+              'static/**/*.css',
+              'static/**/*.png',
+              'static/**/*.otf'],
+            dest: './deploy'
+          }
+        ]
+      },
+      'client-libs': {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: ['./src/lib/*'],
+            dest: './deploy/lib'
+          }
+        ]
+      },
+      server: {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: ['src/game/server/**/*.js'],
+            dest: 'deploy/server'
+          }
+        ]
+      },
+      main: {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: ['src/static/*.html'],
+            dest: 'deploy'
           }
         ]
       }
@@ -74,10 +106,12 @@ module.exports = function (grunt) {
           'deploy/trillClient.js': ['src/game/client/**/*.js']
         }
       }
-    }
+    },
+
+    clean: ["./deploy"]
   });
 
-  grunt.registerTask('default', ['copy:lib']);
-  grunt.registerTask('client', ['copy:lib']);
-  grunt.registerTask('concat', ['browserify', 'bower', 'copy'])
+  grunt.registerTask('default', ['clean']);
+  grunt.registerTask('game', ['clean', 'build-client', 'open']);
+  grunt.registerTask('build-client', ['browserify', 'bower', 'copy', 'injector']);
 }
