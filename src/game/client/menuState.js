@@ -23,7 +23,7 @@ var MenuState = function (){
       this.loadingTxt = this.game.add.text(0, 0, "loading", {font: '65px Inversionz', fill: "#FFFFFF"});
       this.loadingTxt.anchor.setTo(0.5, 0);
 
-//      var loadingTxtTween = this.game.add.tween(this.loadingTxt).to({});
+      var loadingTxtTween = this.game.add.tween(this.loadingTxt).to({alpha:0}, 700, Phaser.Easing.Cubic.InOut, true, 0, Number.MAX_VALUE, true);
 
       this.resizeSprites();
     },
