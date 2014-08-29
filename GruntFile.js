@@ -112,6 +112,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('default', ['clean']);
-  grunt.registerTask('game', ['clean', 'build-client', 'open']);
+  grunt.registerTask('game', ['clean', 'build-client']);
+  grunt.registerTask('game-open', ['game', 'open']);
   grunt.registerTask('build-client', ['browserify', 'bower', 'copy', 'injector']);
 }

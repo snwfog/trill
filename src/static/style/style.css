@@ -4,8 +4,9 @@
 }
 
 .fontPreload{
+  font-family: 'Inversionz';
   position:absolute;
-  display:none;
+  font-size: 1px;
 }
 
 #game canvas{
