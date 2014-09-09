@@ -9,7 +9,6 @@
   font-size: 1px;
 }
 
-#game canvas{
-  margin-left: auto;
-  margin-right: auto;
+body {
+  margin: auto;
 }

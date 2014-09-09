@@ -23,6 +23,10 @@ $(window).resize(function(){
   var width = Math.min (maxDimensions.w, $(window).width());
   var height = Math.min (maxDimensions.h, $(window).height());
 
+  $('canvas')
+      .attr('width', width)
+      .attr('height', height);
+
   game.width = width;
   game.height = height;
   game.stage.bounds.width = width;
