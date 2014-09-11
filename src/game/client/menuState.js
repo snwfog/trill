@@ -16,16 +16,16 @@ var MenuState = function (){
 
     create: function(){
 
-      this.loadingSprite = new Phaser.Sprite(this.game, 0, 0, 'loading');
+      this.loadingSprite = this.game.add.sprite(0, 0, 'loading');
       this.loadingSprite.anchor.setTo(0.5, 0.5);
       this.loadingSprite.animations.add('load');
       this.loadingSprite.play('load', 20, true);
-      this.game.stage.addChild(this.loadingSprite);
 
       this.loadingTxt = this.game.add.text(0, 0, "loading", {font: '65px Inversionz', fill: "#FFFFFF"});
       this.loadingTxt.anchor.setTo(0.5, 0);
 
       var loadingTxtTween = this.game.add.tween(this.loadingTxt).to({alpha:0}, 700, Phaser.Easing.Cubic.InOut, true, 0, Number.MAX_VALUE, true);
+
 
       this.resizeSprites();
     },

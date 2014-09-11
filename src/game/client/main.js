@@ -6,8 +6,8 @@ var maxDimensions = {
 };
 
 var initDimensions = {
-  w:Math.min(window.innerWidth, maxDimensions.w),
-  h:Math.min(window.innerHeight, maxDimensions.h)
+  w:Math.min($(window).width(), maxDimensions.w),
+  h:Math.min($(window).height(), maxDimensions.h)
 };
 
 var game = new Phaser.Game(initDimensions.w, initDimensions.h, Phaser.AUTO, 'game', null, false, false);
