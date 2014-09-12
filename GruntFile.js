@@ -4,6 +4,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-injector');
   grunt.loadNpmTasks('grunt-browserify');
@@ -108,11 +109,19 @@ module.exports = function (grunt) {
       }
     },
 
+    watch: {
+      scripts: {
+        files: ['src/**/*'],
+        tasks: ['clean-build']
+      }
+    },
+
     clean: ["./deploy"]
   });
 
   grunt.registerTask('default', ['clean']);
-  grunt.registerTask('game', ['clean', 'build-client']);
+  grunt.registerTask('game', ['clean-build', 'watch']);
   grunt.registerTask('game-open', ['game', 'open']);
+  grunt.registerTask('clean-build', ['clean', 'build-client']);
   grunt.registerTask('build-client', ['browserify', 'bower', 'copy', 'injector']);
 }
