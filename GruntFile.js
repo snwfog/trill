@@ -8,6 +8,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-injector');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-concurrent');
+  grunt.loadNpmTasks('grunt-nodemon');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -40,16 +42,6 @@ module.exports = function (grunt) {
             flatten: true,
             src: ['./src/lib/*'],
             dest: './deploy/lib'
-          }
-        ]
-      },
-      server: {
-        files: [
-          {
-            expand: true,
-            flatten: true,
-            src: ['src/game/server/**/*.js'],
-            dest: 'deploy/server'
           }
         ]
       },
@@ -109,19 +101,59 @@ module.exports = function (grunt) {
       }
     },
 
-    watch: {
-      scripts: {
-        files: ['src/**/*'],
-        tasks: ['clean-build']
+    clean: ["./deploy"],
+
+    concurrent: {
+      dev: {
+        tasks: ['build', 'nodemon', 'watch'],
+        options: {
+          logConcurrentOutput: true
+        }
       }
     },
 
-    clean: ["./deploy"]
+    nodemon: {
+      dev: {
+        script: "src/game/server/httpServer.js",
+        options: {
+          env: {
+            PORT: '8080'
+          },
+
+          watch: ['src/game/server'],
+
+          callback: function (nodemon) {
+
+            nodemon.on('log', function (event) {
+              console.log(event.colour);
+            });
+
+            // Open the application in a new browser window and is optional
+            nodemon.on('config:update', function () {
+              // Delay before server listens on port
+              setTimeout(function () {
+                require('open')('http://localhost:8080');
+              }, 1000);
+
+            });
+
+          }
+        }
+      }
+    },
+
+    watch: {
+      scripts: {
+        files: ['src/game/client/**/*.js'],
+        tasks: ['build'],
+        options: {
+          livereload: true
+        }
+      }
+    }
+
   });
 
-  grunt.registerTask('default', ['clean']);
-  grunt.registerTask('game', ['clean-build', 'watch']);
-  grunt.registerTask('game-open', ['game', 'open']);
-  grunt.registerTask('clean-build', ['clean', 'build-client']);
-  grunt.registerTask('build-client', ['browserify', 'bower', 'copy', 'injector']);
-}
+  grunt.registerTask('default', ['build', 'concurrent']);
+  grunt.registerTask('build', ['clean', 'browserify', 'bower', 'copy', 'injector']);
+};
