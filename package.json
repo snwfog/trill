@@ -22,6 +22,7 @@
     "grunt-nodemon": "^0.3.0",
     "grunt-open": "^0.2.3",
     "install": "^0.1.7",
+    "open": "^0.0.5",
     "npm": "^1.4.16"
   },
   "scripts": {

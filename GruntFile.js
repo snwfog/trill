@@ -1,11 +1,22 @@
+var open = require('open');
+var url = require('url');
+
 module.exports = function (grunt) {
+
+  var options = {
+    deploy: grunt.option('deploy') || './deploy',
+    url: grunt.option('url') || 'http://localhost:8080/'
+  };
+
+  var urlObj = url.parse(options.url);
+  var indexUrl = url.resolve(url.format(urlObj), '/index.html');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
     open: {
       dev: {
-        path: 'http://localhost:8080/index.html'
+        path: indexUrl
       }
     },
 
@@ -111,7 +122,7 @@ module.exports = function (grunt) {
         script: "src/game/server/httpServer.js",
         options: {
           env: {
-            PORT: '8080'
+            PORT: urlObj.port || 80
           },
 
           watch: ['src/game/server'],
@@ -126,7 +137,7 @@ module.exports = function (grunt) {
             nodemon.on('config:update', function () {
               // Delay before server listens on port
               setTimeout(function () {
-                require('open')('http://localhost:8080/index.html');
+                open(indexUrl);
               }, 1000);
 
             });
