@@ -12,6 +12,18 @@ module.exports = function (grunt) {
   var urlObj = url.parse(options.url);
   var indexUrl = url.resolve(url.format(urlObj), '/index.html');
 
+  grunt.loadNpmTasks('grunt-bower-task');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-open');
+  grunt.loadNpmTasks('grunt-injector');
+  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-concurrent');
+  grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-env');
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
@@ -105,6 +117,7 @@ module.exports = function (grunt) {
           'deploy/trillClient.js': ['src/game/client/**/*.js']
         },
         options:{
+          transform: ['envify'],
           browserifyOptions:{
             debug:true
           }
@@ -127,10 +140,6 @@ module.exports = function (grunt) {
       dev: {
         script: "src/game/server/httpServer.js",
         options: {
-          env: {
-            PORT: urlObj.port || '80'
-          },
-
           watch: ['src/game/server'],
 
           callback: function (nodemon) {
@@ -171,18 +180,6 @@ module.exports = function (grunt) {
     }
 
   });
-
-  grunt.loadNpmTasks('grunt-bower-task');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-open');
-  grunt.loadNpmTasks('grunt-injector');
-  grunt.loadNpmTasks('grunt-browserify');
-  grunt.loadNpmTasks('grunt-concurrent');
-  grunt.loadNpmTasks('grunt-nodemon');
-  grunt.loadNpmTasks('grunt-env');
 
   grunt.registerTask('default', ['build', 'concurrent']);
   grunt.registerTask('build', ['clean', 'env', 'browserify', 'bower', 'copy', 'injector']);

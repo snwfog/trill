@@ -1,4 +1,4 @@
-global.Trill = {
+module.exports  = {
 
   InGameState: require('./inGameState.js'),
   MenuState: require('./menuState.js'),

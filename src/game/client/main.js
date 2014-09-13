@@ -1,4 +1,4 @@
-require('./trill.js')
+var trill = require('./trill.js')
 
 var maxDimensions = {
   w:2048,
@@ -12,12 +12,12 @@ var initDimensions = {
 
 var game = new Phaser.Game(initDimensions.w, initDimensions.h, Phaser.AUTO, 'game', null, false, false);
 
-game.webapi = new Trill.WebApi({
-  url: 'http://localhost:8080'
+game.webapi = new trill.WebApi({
+  url: process.env.TRILL_SERVER_URL
 });
 
-game.state.add('menuState', new Trill.MenuState(), true);
-game.state.add('inGameState', new Trill.InGameState());
+game.state.add('menuState', new trill.MenuState(), true);
+game.state.add('inGameState', new trill.InGameState());
 
 $(window).resize(function(){
   var width = Math.min (maxDimensions.w, $(window).width());
