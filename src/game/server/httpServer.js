@@ -3,6 +3,7 @@ var http = require('http');
 var sio = require('socket.io');
 var path = require('path');
 var mime = require('mime');
+var url = require('url');
 
 var trillServer = require('./trillServer');
 var log = console.log;
@@ -17,13 +18,11 @@ var staticPageCache = {};
 
 var server = http.createServer(function(request, response) {
   var filePath = false;
-//  if (request.url === '/') {
-//    filePath = "./src/static/index.html";
-//  } else {
-//    filePath = "./src" + request.url;
-//  }
-
-  filePath = "./deploy"  + request.url;
+  if (request.url === '/') {
+    filePath = path.join(process.env.TRILL_SERVER_ASSET_ROOT, "/index.html");
+  } else {
+    filePath = path.join(process.env.TRILL_SERVER_ASSET_ROOT, request.url);
+  }
 
   log("Sending " + filePath + " to the client...");
   return serveFile(response, staticPageCache, filePath);
@@ -51,7 +50,7 @@ var serveFile = function(response, cache, absPath) {
   }
 };
 
-server.listen(8080, "0.0.0.0", function() {
+server.listen(url.parse(process.env.TRILL_SERVER_URL).port, "0.0.0.0", function() {
   return log("Received new connection");
 });
 

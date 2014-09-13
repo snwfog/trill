@@ -1,5 +1,6 @@
 var open = require('open');
 var url = require('url');
+var path = require('path');
 
 module.exports = function (grunt) {
 
@@ -31,7 +32,7 @@ module.exports = function (grunt) {
               'static/**/*.css',
               'static/**/*.png',
               'static/**/*.otf'],
-            dest: './deploy'
+            dest: path.normalize(options.deploy)
           }
         ]
       },
@@ -41,7 +42,7 @@ module.exports = function (grunt) {
             expand: true,
             flatten: true,
             src: ['./src/lib/*'],
-            dest: './deploy/lib'
+            dest: path.join(options.deploy, '/lib')
           }
         ]
       },
@@ -51,7 +52,7 @@ module.exports = function (grunt) {
             expand: true,
             flatten: true,
             src: ['src/static/*.html'],
-            dest: 'deploy'
+            dest: path.normalize(options.deploy)
           }
         ]
       }
@@ -61,7 +62,7 @@ module.exports = function (grunt) {
       install: {
         options: {
           verbose: true,
-          targetDir: 'deploy/lib'
+          targetDir: path.join(options.deploy, '/lib')
         }
       }
     },
@@ -75,7 +76,10 @@ module.exports = function (grunt) {
         },
 
         files: {
-          'deploy/index.html': ['deploy/lib/**/*.js', 'deploy/trillClient.js']
+          'deploy/index.html': [
+            path.join(options.deploy, '/lib/**/*.js'),
+            path.join(options.deploy, '/trillClient.js'),
+          ]
         }
       },
 
@@ -87,7 +91,9 @@ module.exports = function (grunt) {
         },
 
         files: {
-          'deploy/index.html': ['deploy/static/**/*.css']
+          'deploy/index.html': [
+            path.join(options.deploy, '/static/**/*.css'),
+          ]
         }
       }
 
@@ -122,7 +128,7 @@ module.exports = function (grunt) {
         script: "src/game/server/httpServer.js",
         options: {
           env: {
-            PORT: urlObj.port || 80
+            PORT: urlObj.port || '80'
           },
 
           watch: ['src/game/server'],
@@ -155,6 +161,13 @@ module.exports = function (grunt) {
           livereload: true
         }
       }
+    },
+
+    env : {
+      dev : {
+        TRILL_SERVER_ASSET_ROOT: path.normalize(options.deploy),
+        TRILL_SERVER_URL: url.format(urlObj)
+      }
     }
 
   });
@@ -169,7 +182,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-env');
 
   grunt.registerTask('default', ['build', 'concurrent']);
-  grunt.registerTask('build', ['clean', 'browserify', 'bower', 'copy', 'injector']);
+  grunt.registerTask('build', ['clean', 'env', 'browserify', 'bower', 'copy', 'injector']);
 };
