@@ -3,8 +3,19 @@
   src: url('../font/Inversionz.otf');
 }
 
+@font-face {
+  font-family: 'Saucer';
+  src: url('../font/SaucerBB.ttf');
+}
+
 .fontPreload{
   font-family: 'Inversionz';
+  position:absolute;
+  font-size: 1px;
+}
+
+.fontPreload2{
+  font-family: 'Saucer';
   position:absolute;
   font-size: 1px;
 }

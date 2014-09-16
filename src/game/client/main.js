@@ -16,8 +16,9 @@ game.webapi = new trill.WebApi({
   url: process.env.TRILL_SERVER_URL
 });
 
-game.state.add('menuState', new trill.MenuState(), true);
-game.state.add('inGameState', new trill.InGameState());
+game.state.add('inGame', new trill.InGameState());
+game.state.add('menu', new trill.MenuState());
+game.state.add('boot', new trill.BootState(), true);
 
 $(window).resize(function(){
   var width = Math.min (maxDimensions.w, $(window).width());

@@ -43,7 +43,8 @@ module.exports = function (grunt) {
             src: [
               'static/**/*.css',
               'static/**/*.png',
-              'static/**/*.otf'],
+              'static/**/*.otf',
+              'static/**/*.ttf'],
             dest: path.normalize(options.deploy)
           }
         ]
