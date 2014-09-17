@@ -5,7 +5,6 @@
   "main": "GruntFile.js",
   "dependencies": {
     "mime": "^1.2.11",
-    "path": "^0.4.9",
     "socket.io": "^1.0.4"
   },
   "devDependencies": {

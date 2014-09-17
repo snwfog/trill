@@ -141,7 +141,7 @@ module.exports = function (grunt) {
       dev: {
         script: "src/game/server/httpServer.js",
         options: {
-          watch: ['src/game/server'],
+          watch: ['src/game'],
 
           callback: function (nodemon) {
 

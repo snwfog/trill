@@ -16,6 +16,10 @@ var BootState = function (){
 
     create: function(){
 
+      // Allow the camera to go anywhere
+      this.game.camera.bounds = null;
+      this.game.camera.position.setTo(0, 0);
+
       this.loadingSprite = this.game.add.sprite(0, 0, 'loading');
       this.loadingSprite.anchor.setTo(0.5, 0.5);
       this.loadingSprite.animations.add('load');

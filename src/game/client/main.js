@@ -21,25 +21,25 @@ game.state.add('menu', new trill.MenuState());
 game.state.add('boot', new trill.BootState(), true);
 
 $(window).resize(function(){
+
   var width = Math.min (maxDimensions.w, $(window).width());
   var height = Math.min (maxDimensions.h, $(window).height());
 
-  $('canvas')
-      .attr('width', width)
-      .attr('height', height);
+  window.requestAnimationFrame(function (){
 
-  game.width = width;
-  game.height = height;
-  game.stage.bounds.width = width;
-  game.stage.bounds.height = height;
-  game.camera.width = width;
-  game.camera.height = height;
+    game.width = width;
+    game.height = height;
+    game.camera.width = width;
+    game.camera.height = height;
+    game.world.bounds = new Phaser.Rectangle(0, 0, width, height);
 
-  if (game.renderType === Phaser.WEBGL)
-  {
-    game.renderer.resize(width, height);
-  }
+    if (game.renderType === Phaser.WEBGL)
+    {
+      game.renderer.resize(width, height);
+    }
 
-  game.state.getCurrentState().onResize({width: width, height:height});
+    game.state.getCurrentState().onResize({width: width, height:height});
+
+  });
 
 });
