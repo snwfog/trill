@@ -171,9 +171,9 @@ var InGameState = function () {
           });
     },
 
-    onResize: function(dimensions){
-      this.rope.position.x = dimensions.width/2;
-      this.rope.setAll('body.acceleration.y', (this.opponentCurrentVelocity - this.currentTouchVelocity) * 1000 * 0.20 * this.game.height)
+    resize: function(width, height){
+      this.rope.position.x = width/2;
+      this.rope.setAll('body.acceleration.y', (this.opponentCurrentVelocity - this.currentTouchVelocity) * 1000 * 0.20 * height)
     }
   };
 }

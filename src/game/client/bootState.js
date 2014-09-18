@@ -16,6 +16,8 @@ var BootState = function (){
 
     create: function(){
 
+      this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+
       // Allow the camera to go anywhere
       this.game.camera.bounds = null;
       this.game.camera.position.setTo(0, 0);
@@ -34,8 +36,8 @@ var BootState = function (){
       this.game.state.start('menu');
     },
 
-    onResize: function(dimensions){
-      this.game.world.setBounds(0, 0, dimensions.width, dimensions.height);
+    resize: function(width, height){
+      this.game.world.setBounds(0, 0, width, height);
       this.resizeSprites();
     },
 

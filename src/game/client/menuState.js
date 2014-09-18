@@ -16,17 +16,18 @@ var MenuState = function (){
       this.titleTxt = this.game.add.text(0, 0, "Trill", {font:'65px Saucer', fill:'#FFFFFF'});
       this.titleTxt.anchor.setTo(0.5, 1);
 
-      this.resizeSprites();
+      this.resize(this.game.width, this.game.height);
     },
 
-    onResize: function(dimensions){
-      this.resizeSprites();
+    render: function(){
+//      this.game.debug.spriteBounds(this.titleTxt);
+//      this.game.debug.cameraInfo(this.game.camera, this.game.world.centerX - 200, this.game.world.centerY);
+//      this.game.debug.geom(this.game.world.bounds, '#FF0000', false);
     },
 
-    resizeSprites: function () {
-      this.titleTxt.position.setTo(this.game.world.centerX, 0.25 * this.game.world.height);
+    resize: function(width, height){
+      this.titleTxt.position.setTo(this.game.world.centerX, 0.25 * height);
     }
-
   };
 };
 
