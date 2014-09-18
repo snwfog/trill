@@ -1,3 +1,5 @@
+var Letter = require('./plugins/titleLetter.js');
+
 var MenuState = function (){
 
   return {
@@ -6,11 +8,17 @@ var MenuState = function (){
 
     titleTxt: null,
 
+    pluginManager: null,
+
     create: function(){
       this.titleTxt = this.game.add.text(0, 0, "Trill", {font:'65px Saucer', fill:'#FFFFFF'});
       this.titleTxt.anchor.setTo(0.5, 1);
 
       this.resize(this.game.width, this.game.height);
+
+      this.pluginManager = new Phaser.PluginManager(this.game);
+      var letter = this.pluginManager.add(new Letter(this.game, this.pluginManager, this.titleTxt));
+      letter.active = true;
     },
 
     render: function(){
@@ -20,7 +28,12 @@ var MenuState = function (){
     },
 
     resize: function(width, height){
+      this.game.world.setBounds(0, 0, width, height);
       this.titleTxt.position.setTo(this.game.world.centerX, 0.25 * height);
+    },
+
+    update: function(){
+      this.pluginManager.update();
     }
   };
 };

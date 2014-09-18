@@ -170,6 +170,7 @@ var InGameState = function () {
     },
 
     resize: function(width, height){
+      this.game.world.setBounds(0, 0, width, height);
       this.rope.position.x = width/2;
       this.rope.setAll('body.acceleration.y', (this.opponentCurrentVelocity - this.currentTouchVelocity) * 1000 * 0.20 * height)
     }
