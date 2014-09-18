@@ -1,5 +1,3 @@
-var State = require('./state.js');
-
 /** Average clicking speed, in numOfClicks/millisecs */
 var averageSpeed = 62 / (10 * 1000);
 
@@ -15,7 +13,7 @@ var InGameState = function () {
 
     opponentCurrentVelocity : 0,
 
-    prototype: new State(),
+    prototype: new Phaser.State(),
 
     rope:null,
 

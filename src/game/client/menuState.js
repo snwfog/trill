@@ -1,16 +1,10 @@
-var State = require("./state.js");
-
 var MenuState = function (){
 
   return {
 
-    prototype: new State(),
+    prototype: new Phaser.State(),
 
     titleTxt: null,
-
-    preload: function (){
-
-    },
 
     create: function(){
       this.titleTxt = this.game.add.text(0, 0, "Trill", {font:'65px Saucer', fill:'#FFFFFF'});

@@ -1,10 +1,8 @@
-var State = require("./state.js");
-
 var BootState = function (){
 
   return {
 
-    prototype: new State(),
+    prototype: new Phaser.State(),
 
     loadingSprite: null,
 
@@ -31,21 +29,16 @@ var BootState = function (){
       this.loadingTxt.anchor.setTo(0.5, 0);
 
       var loadingTxtTween = this.game.add.tween(this.loadingTxt).to({alpha:0}, 700, Phaser.Easing.Cubic.InOut, true, 0, Number.MAX_VALUE, true);
-      this.resizeSprites();
+      this.resize(this.game.width, this.game.height);
 
       this.game.state.start('menu');
     },
 
     resize: function(width, height){
       this.game.world.setBounds(0, 0, width, height);
-      this.resizeSprites();
-    },
-
-    resizeSprites: function () {
-      this.loadingSprite.position.setTo(this.game.world.centerX, this.game.world.centerY);
+      this.loadingSprite.position.setTo(width/2, height/2);
       this.loadingTxt.position.setTo(this.loadingSprite.position.x, this.loadingSprite.position.y + 50);
     }
-
   };
 };
 
