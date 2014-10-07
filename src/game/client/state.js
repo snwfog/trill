@@ -35,7 +35,6 @@ State.prototype.constructor = State;
 State.prototype.addMod = function(mod, group){
 
   mod.group = group;
-  mod.create();
   this.mods.push(mod);
 };
 

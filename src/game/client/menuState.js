@@ -15,7 +15,7 @@ MenuState.prototype.constructor = MenuState;
 MenuState.prototype.onCreate = function(){
   this.title = this.add.group();
   this.addMod(new Letter(this.game), this.title);
-  this.resize(this.game.width, this.game.height);
+  this.onResize(this.game.width, this.game.height);
 };
 
 MenuState.prototype.onRender = function(){
