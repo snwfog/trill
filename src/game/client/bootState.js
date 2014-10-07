@@ -1,4 +1,4 @@
-var BootState = function (){
+var BootState = function () {
 
   return {
 
@@ -6,13 +6,13 @@ var BootState = function (){
 
     loadingSprite: null,
 
-    loadingTxt:null,
+    loadingTxt: null,
 
-    preload: function (){
-      this.game.load.spritesheet('loading','static/img/impatient-loading_67x64.png', 67, 64, 19);
+    preload: function () {
+      this.game.load.spritesheet('loading', 'static/img/impatient-loading_67x64.png', 67, 64, 19);
     },
 
-    create: function(){
+    create: function () {
 
       this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 
@@ -28,15 +28,34 @@ var BootState = function (){
       this.loadingTxt = this.game.add.text(0, 0, "loading", {font: '65px Inversionz', fill: "#FFFFFF"});
       this.loadingTxt.anchor.setTo(0.5, 0);
 
-      var loadingTxtTween = this.game.add.tween(this.loadingTxt).to({alpha:0}, 700, Phaser.Easing.Cubic.InOut, true, 0, Number.MAX_VALUE, true);
+      var loadingTxtTween = this.game.add.tween(this.loadingTxt).to({alpha: 0}, 700, Phaser.Easing.Cubic.InOut, true, 0, Number.MAX_VALUE, true);
       this.resize(this.game.width, this.game.height);
 
-      this.game.state.start('menu');
+      this.load.onPackComplete.add(function () {
+
+        this.tweens.remove(loadingTxtTween);
+        this.add.tween(this.loadingTxt)
+            .to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
+        this.add.tween(this.loadingSprite)
+            .to({alpha: 0}, 500, Phaser.Easing.Linear.None, true)
+            .onComplete.add(function () {
+
+              var game = this.game;
+              setTimeout(function(){
+                game.state.start('menu');
+              }, 1000);
+
+            }, this);
+
+      }, this);
+
+      // Loading all assets needed for the game
+      this.load.pack('level', 'static/pack/pack.json').start();
     },
 
-    resize: function(width, height){
+    resize: function (width, height) {
       this.game.world.setBounds(0, 0, width, height);
-      this.loadingSprite.position.setTo(width/2, height/2);
+      this.loadingSprite.position.setTo(width / 2, height / 2);
       this.loadingTxt.position.setTo(this.loadingSprite.position.x, this.loadingSprite.position.y + 50);
     }
   };

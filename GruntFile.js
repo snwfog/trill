@@ -44,7 +44,9 @@ module.exports = function (grunt) {
               'static/**/*.css',
               'static/**/*.png',
               'static/**/*.otf',
-              'static/**/*.ttf'],
+              'static/**/*.ttf',
+              'static/**/*.xml',
+              'static/**/*.json'],
             dest: path.normalize(options.deploy)
           }
         ]

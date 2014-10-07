@@ -1,0 +1,17 @@
+{
+  "level": [
+    {
+      "type": "atlasXML",
+      "key": "blueSheet",
+      "textureURL": "static/atlas/blueSheet.png",
+      "atlasURL": "static/atlas/blueSheet.xml"
+    },
+
+    {
+      "type": "atlasXML",
+      "key": "yellowSheet",
+      "textureURL": "static/atlas/yellowSheet.png",
+      "atlasURL": "static/atlas/yellowSheet.xml"
+    }
+  ]
+}
