@@ -5,7 +5,6 @@ var path = require('path');
 var mime = require('mime');
 var url = require('url');
 
-var trillServer = require('./trillServer');
 var log = console.log;
 
 var connectionCache = {};
@@ -68,5 +67,3 @@ var send404 = function(response) {
   response.write('Error 404: resource not found');
   return response.end();
 };
-
-trillServer.listen(server);
