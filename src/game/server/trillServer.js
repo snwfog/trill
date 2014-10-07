@@ -31,44 +31,44 @@ exports.listen = function (server) {
 //      // Else its just a new player request
 //      // Associate in the local server side cache
 //      clientIdStorage[newPlayerId] = player;
-//      return socket.emit('newId', newPlayerId);
+      return socket.emit('newId', "");
     });
 
 
-//    socket.on('createGame', function() {
-//      return socket.emit('gameReady');
-//    });
+    socket.on('createGame', function() {
+      return socket.emit('gameReady');
+    });
 
 
-//    socket.on('joinGame', function() {
-//      return socket.emit('gameReady');
-//    });
+    socket.on('joinGame', function() {
+      return socket.emit('gameReady');
+    });
 
 
-//    socket.on('sendPacket', function(data) {
-//      return socket.broadcast.emit('packet Received', data);
-//    });
+    socket.on('sendPacket', function(data) {
+      return socket.broadcast.emit('packet Received', data);
+    });
 
 
-//    socket.on('roundReady', function() {
-//
-//      socket.emit('gameCountDownStart', 3 * 1000);
-//
-//      setTimeout(function(){
-//
-//          var intervalId = setInterval(function(){
-//
-//              // send an random speed of +- 10% of the averageSpeed
-//              socket.emit('serverPacket', averageSpeed + ((Math.random() - 0.5) * 0.2 * averageSpeed));
-//          }, 100);
-//
-//         setTimeout(function(){
-//             clearInterval(intervalId);
-//             socket.emit('gameEnded');
-//         }, 5 * 1000);
-//
-//      }, 3 * 1000);
-//    });
+    socket.on('roundReady', function() {
+
+      socket.emit('gameCountDownStart', 3 * 1000);
+
+      setTimeout(function(){
+
+          var intervalId = setInterval(function(){
+
+              // send an random speed of +- 10% of the averageSpeed
+              socket.emit('serverPacket', averageSpeed + ((Math.random() - 0.5) * 0.2 * averageSpeed));
+          }, 100);
+
+         setTimeout(function(){
+             clearInterval(intervalId);
+             socket.emit('gameEnded');
+         }, 5 * 1000);
+
+      }, 3 * 1000);
+    });
 
     return getGameInstance(socket);
   });

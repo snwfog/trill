@@ -39,8 +39,8 @@ var InGameState = function () {
       this.rope.enableBody = true;
       this.rope.physicsBodyType = Phaser.Physics.ARCADE;
 
-      this.rope.position.x = this.game.width / 2;
-      this.rope.position.y = this.game.height / 2;
+      this.rope.position.x = this.game.width / 2 ;
+      this.rope.position.y = this.game.height / 2 ;
 
       // First add the knot at the center of the screen
       this.knot = this.rope.create(0, 0, 'rope_knot');
