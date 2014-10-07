@@ -23,7 +23,7 @@ Letter.prototype.constructor = Letter;
 Letter.prototype.onCreate = function () {
 
   this.titleBackground = this.game.add.text(0, 0, "Trill", {font: '65px Saucer', fill: '#FFFFFF'}, this.group);
-  this.titleBackground.alpa = 0.5;
+  this.titleBackground.alpha = 0.5;
   this.titleBackground.anchor.setTo(0.5, 1);
 
   this.titleTxt = this.game.add.text(0, 0, "Trill", {font: '65px Saucer', fill: '#FFFFFF'}, this.group);
