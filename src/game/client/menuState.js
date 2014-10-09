@@ -1,5 +1,5 @@
-var Letter = require('./plugins/titleLetter.js');
-var State = require('./state.js');
+var Letter = require('plugins/titleLetter.js');
+var State = require('state.js');
 
 var MenuState = function (game){
 

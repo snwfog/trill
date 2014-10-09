@@ -1,6 +1,8 @@
 var open = require('open');
 var url = require('url');
 var path = require('path');
+var envify = require('envify');
+var remapify = require('remapify');
 
 module.exports = function (grunt) {
 
@@ -93,7 +95,7 @@ module.exports = function (grunt) {
         files: {
           'deploy/index.html': [
             path.join(options.deploy, '/lib/**/*.js'),
-            path.join(options.deploy, '/trillClient.js'),
+            path.join(options.deploy, '/trillClient.js')
           ]
         }
       },
@@ -107,7 +109,7 @@ module.exports = function (grunt) {
 
         files: {
           'deploy/index.html': [
-            path.join(options.deploy, '/static/**/*.css'),
+            path.join(options.deploy, '/static/**/*.css')
           ]
         }
       }
@@ -119,10 +121,23 @@ module.exports = function (grunt) {
         files: {
           'deploy/trillClient.js': ['src/game/client/**/*.js']
         },
-        options:{
-          transform: ['envify'],
-          browserifyOptions:{
-            debug:true
+        options: {
+
+          browserifyOptions: {
+            debug: true
+          },
+
+          preBundleCB: function (b) {
+            b.transform(envify, {
+              TRILL_SERVER_URL: url.format(urlObj)
+            })
+                .plugin(remapify, [
+                  {
+                    src: './**/*.js',
+                    expose: '',
+                    cwd: './src/game/client'
+                  }
+                ]);
           }
         }
       }
@@ -175,8 +190,8 @@ module.exports = function (grunt) {
       }
     },
 
-    env : {
-      dev : {
+    env: {
+      dev: {
         TRILL_SERVER_ASSET_ROOT: path.normalize(options.deploy),
         TRILL_SERVER_URL: url.format(urlObj)
       }

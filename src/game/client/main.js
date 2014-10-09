@@ -1,4 +1,4 @@
-var trill = require('./trill.js')
+var trill = require('trill.js');
 
 var game = new Phaser.Game("100%", "100%", Phaser.AUTO, '', null, false, false);
 

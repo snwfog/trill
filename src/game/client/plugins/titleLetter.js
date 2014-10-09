@@ -1,4 +1,4 @@
-var State = require('../state.js');
+var State = require('state.js');
 
 var Letter = function (game, group) {
 
