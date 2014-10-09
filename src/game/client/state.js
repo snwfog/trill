@@ -32,9 +32,15 @@ State.prototype = Object.create(Phaser.State.prototype);
 
 State.prototype.constructor = State;
 
-State.prototype.addMod = function(mod, group){
+State.prototype.addMods = function(mods){
+  for(var i in mods){
+    this.addMod(mods[i]);
+  }
+};
 
-  mod.group = group;
+State.prototype.addMod = function(mod){
+
+  mod.group = this.add.group();
   this.mods.push(mod);
 };
 
