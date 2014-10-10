@@ -1,5 +1,5 @@
 var Button = require('mods/button.js');
-var Letter = require('mods/titleLetter.js');
+var Title = require('mods/title.js');
 
 var modFactory = {
 
@@ -25,7 +25,7 @@ var modFactory = {
 
   text: {
     title: function(game){
-      return new Letter(game);
+      return new Title(game);
     }
   }
 };
