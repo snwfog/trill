@@ -1,5 +1,4 @@
-var Letter = require('plugins/titleLetter.js');
-var BlueButton = require('plugins/button.js');
+var factory = require('modFactory.js');
 var State = require('state.js');
 
 var buttonSpacing = 20;
@@ -17,8 +16,8 @@ MenuState.prototype = Object.create(State.prototype);
 MenuState.prototype.constructor = MenuState;
 
 MenuState.prototype.onCreate = function(){
-  this.title = new Letter(this.game);
-  this.blueButton = new BlueButton(this.game);
+  this.title = factory.text.title(this.game);
+  this.blueButton = factory.button.blue(this.game, "New Game");
 
   this.addMods([
     this.title,
