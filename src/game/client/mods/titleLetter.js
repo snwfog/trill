@@ -28,8 +28,6 @@ Letter.prototype.onCreate = function () {
 
   this.titleTxt = this.game.add.text(0, 0, "Trill", {font: '65px Saucer', fill: '#FFFFFF'}, this.group);
   this.titleTxt.anchor.setTo(0.5, 1);
-
-  this.onResize(this.game.width, this.game.height);
 };
 
 Letter.prototype.onUpdate = function () {

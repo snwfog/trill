@@ -8,14 +8,17 @@
   src: url('../font/SaucerBB.ttf');
 }
 
-.fontPreload{
-  font-family: 'Inversionz';
-  position:absolute;
-  font-size: 1px;
+@font-face {
+  font-family: 'Future';
+  src: url('../font/kenvector_future.ttf');
 }
 
-.fontPreload2{
-  font-family: 'Saucer';
+@font-face {
+  font-family: 'Future-Thin';
+  src: url('../font/kenvector_future_thin.ttf');
+}
+
+.fontPreload{
   position:absolute;
   font-size: 1px;
 }
