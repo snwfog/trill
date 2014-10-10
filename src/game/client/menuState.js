@@ -24,7 +24,6 @@ MenuState.prototype.onCreate = function(){
     this.title,
     this.blueButton
   ]);
-  this.onResize(this.game.width, this.game.height);
 };
 
 MenuState.prototype.onRender = function(){
@@ -38,8 +37,7 @@ MenuState.prototype.onResize = function(width, height){
   this.title.group.position.setTo(this.game.world.centerX, 0.25 * height);
 
   if(width > height){
-    var buttonWidth = this.blueButton.button != null ? this.blueButton.button.width : 0;
-    this.blueButton.group.position.setTo(width/2 - 190/2 - buttonSpacing, 0.75 * height);
+    this.blueButton.group.position.setTo(width/2 - this.blueButton.size.width/2 - buttonSpacing, 0.75 * height);
   }
   else {
     this.blueButton.group.position.setTo(width/2, 0.75 * height);

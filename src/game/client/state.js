@@ -26,6 +26,11 @@ var State = function(game){
 
   this.mods = [];
   this.group = null;
+
+  Object.defineProperty(this, 'size', {
+    value : {width: 0, height: 0},
+    configurable : true
+  });
 };
 
 State.prototype = Object.create(Phaser.State.prototype);
@@ -78,6 +83,8 @@ State.prototype.create = function(){
   for(var i in this.mods){
     this.mods[i].create();
   }
+
+  this.resize(this.game.width, this.game.height);
 };
 
 State.prototype.update = function(){
