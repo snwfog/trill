@@ -20,7 +20,7 @@ Button.prototype = Object.create(State.prototype);
 Button.prototype.constructor = Button;
 
 Button.prototype.onCreate = function () {
-  this.button = this.add.button(0, 0, 'blueSheet', undefined, undefined, this.parms.up, this.parms.up, this.parms.down, this.parms.up, this.group);
+  this.button = this.add.button(0, 0, this.parms.sheet, undefined, undefined, this.parms.up, this.parms.up, this.parms.down, this.parms.up, this.group);
   this.button.anchor.setTo(0.5, 0.5);
 };
 

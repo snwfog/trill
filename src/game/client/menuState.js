@@ -9,6 +9,7 @@ var MenuState = function (game){
 
   this.title = null;
   this.blueButton = null;
+  this.yellowButton = null;
 };
 
 MenuState.prototype = Object.create(State.prototype);
@@ -18,10 +19,12 @@ MenuState.prototype.constructor = MenuState;
 MenuState.prototype.onCreate = function(){
   this.title = factory.text.title(this.game);
   this.blueButton = factory.button.blue(this.game, "New Game");
+  this.yellowButton = factory.button.yellow(this.game, "Join Game");
 
   this.addMods([
     this.title,
-    this.blueButton
+    this.blueButton,
+    this.yellowButton
   ]);
 };
 
@@ -37,9 +40,11 @@ MenuState.prototype.onResize = function(width, height){
 
   if(width > height){
     this.blueButton.group.position.setTo(width/2 - this.blueButton.size.width/2 - buttonSpacing, 0.75 * height);
+    this.yellowButton.group.position.setTo(width/2 + this.blueButton.size.width/2 + buttonSpacing, 0.75 * height);
   }
   else {
-    this.blueButton.group.position.setTo(width/2, 0.75 * height);
+    this.blueButton.group.position.setTo(width/2, 0.75 * height - this.blueButton.size.height/2 - buttonSpacing);
+    this.yellowButton.group.position.setTo(width/2, 0.75 * height + this.blueButton.size.height/2 + buttonSpacing);
   }
 };
 
