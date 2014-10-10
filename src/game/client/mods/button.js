@@ -1,4 +1,4 @@
-var State = require('state.js');
+var State = require('state/state.js');
 
 var Button = function (game, parms) {
 

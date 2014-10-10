@@ -1,7 +1,9 @@
 module.exports  = {
 
-  InGameState: require('./inGameState.js'),
-  BootState: require('./bootState.js'),
-  MenuState: require('./menuState.js'),
-  WebApi: require('./webapi.js')
+  State:{
+    InGame: require('state/inGameState.js'),
+    Boot: require('state/bootState.js'),
+    Menu: require('state/menuState.js')
+  },
+  WebApi: require('webapi.js')
 };

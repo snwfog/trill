@@ -1,5 +1,5 @@
 var factory = require('modFactory.js');
-var State = require('state.js');
+var State = require('state/state.js');
 
 var buttonSpacing = 20;
 
