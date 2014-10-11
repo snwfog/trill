@@ -11,6 +11,7 @@ var MenuState = function (game) {
   this.newButton = null;
   this.joinButton = null;
   this.helpButton = null;
+  this.popup = null;
 };
 
 MenuState.prototype = Object.create(State.prototype);
@@ -22,17 +23,23 @@ MenuState.prototype.onCreate = function () {
   this.newButton = factory.button.blue(this.game, "New Game");
   this.joinButton = factory.button.yellow(this.game, "Join Game");
   this.helpButton = factory.button.grey(this.game, "?");
-//  var popup = factory.popup(this.game, "This is some help text.");
+  this.popup = factory.popup(this.game, "This is some help text.");
 
   this.addMods([
     this.title,
     this.newButton,
     this.joinButton,
     this.helpButton,
-//    popup
+    this.popup
   ]);
 
-//  setTimeout(function(){ popup.show(); }, 3000);
+  var state = this;
+  setTimeout(function () {
+    state.popup.show();
+  }, 3000);
+  setTimeout(function () {
+    state.popup.dismiss();
+  }, 6000);
 };
 
 MenuState.prototype.onRender = function () {
@@ -53,6 +60,8 @@ MenuState.prototype.onResize = function (width, height) {
     this.joinButton.group.position.setTo(width / 2, 0.65 * height + this.newButton.bounds.height / 2 + buttonSpacing);
   }
   this.helpButton.group.position.setTo(width / 2, (height + this.joinButton.bounds.bottom) / 2);
+
+  this.popup.group.position.setTo(width / 2, height / 2);
 };
 
 module.exports = MenuState;

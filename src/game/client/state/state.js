@@ -24,8 +24,8 @@ var State = function (game) {
   }
 
   this.mods = [];
-  this.group = null;
   this.bounds = {};
+  this.group = null;
 
   var state = this;
   Object.defineProperties(this.bounds,
@@ -83,9 +83,16 @@ State.prototype.addMods = function (mods) {
 
 State.prototype.addMod = function (mod) {
 
-  mod.group = this.add.group();
+  mod.group = this.add.group(this.group);
   this.mods.push(mod);
 };
+
+/**
+ * Called only if the state is a root state
+ */
+State.prototype.init = function () {
+  this.group = this.world;
+}
 
 State.prototype.preload = function () {
 
