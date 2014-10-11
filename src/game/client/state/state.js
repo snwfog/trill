@@ -81,9 +81,9 @@ State.prototype.addMods = function (mods) {
   }
 };
 
-State.prototype.addMod = function (mod) {
+State.prototype.addMod = function (mod, group) {
 
-  mod.group = this.add.group(this.group);
+  mod.group = this.add.group(group || this.group);
   this.mods.push(mod);
 };
 
@@ -129,6 +129,7 @@ State.prototype.create = function () {
     this.mods[i].create();
   }
 
+  this.postCreate();
   this.resize(this.game.width, this.game.height);
 };
 
@@ -197,5 +198,13 @@ State.prototype.callEvent = function (eventName, arg1, arg2) {
 };
 
 State.prototype.bounds = {};
+
+State.prototype.postCreate = function () {
+
+  this.callEvent('onPostCreate');
+  for (var i in this.mods) {
+    this.mods[i].postCreate();
+  }
+};
 
 module.exports = State;

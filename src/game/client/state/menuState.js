@@ -32,14 +32,12 @@ MenuState.prototype.onCreate = function () {
     this.helpButton,
     this.popup
   ]);
+};
 
-  var state = this;
-  setTimeout(function () {
-    state.popup.show();
-  }, 3000);
-  setTimeout(function () {
-    state.popup.dismiss();
-  }, 6000);
+MenuState.prototype.onPostCreate = function () {
+  this.helpButton.button.onInputUp.add(function () {
+    this.popup.show();
+  }, this);
 };
 
 MenuState.prototype.onRender = function () {

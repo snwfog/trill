@@ -1,12 +1,15 @@
 var State = require('state/state.js');
+var Button = require('mods/button.js');
 
 var Popup = function(game, parms){
 
   State.call(this, game);
 
   this.parms = parms || {};
+
   this.text = null;
   this.window = null;
+  this.button = null;
 
   /**
    * Sprite that takes the whole screen so that nothing but the
@@ -28,7 +31,7 @@ Popup.prototype.constructor = Popup;
 
 Popup.prototype.onCreate = function () {
 
-  this._blockingImage = new Phaser.Image(this.game, 0, 0, new Phaser.BitmapData(this.game, '_blockBitmapData', 1, 1).setPixel(0, 0, 0, 255, 255));
+  this._blockingImage = new Phaser.Image(this.game, 0, 0, new Phaser.BitmapData(this.game, '_blockBitmapData', 1, 1).setPixel32(0, 0, 0, 0, 0, 128));
   this._blockingImage.inputEnabled = true;
   this._blockingImage.anchor.setTo(0.5, 0.5);
   this._blockingImage.width = 0;
@@ -40,14 +43,34 @@ Popup.prototype.onCreate = function () {
 
   this.window = this.add.sprite(0, 0, 'greySheet', 'grey_panel', this.contentGroup);
   this.window.anchor.setTo(0.5, 0.5);
-  this.window.width = 150;
-  this.window.height = 150;
+  this.window.width = 450;
+  this.window.height = 300;
 
-  this.text = this.game.add.text(0, 0, this.parms.text || '', {font: '15px Future', fill: '#EEEEEE'}, this.contentGroup);
+  this.text = this.game.add.text(0, 0, this.parms.text || '', {font: '15px Future', fill: '#000000'}, this.contentGroup);
   this.text.anchor.setTo(0.5, 0.5);
 
-  this.contentGroup.scale.set(0.001, 0.001);
+  this.button = new Button(this.game, {
+    sheet: "greySheet",
+    up: "grey_button08",
+    down: "grey_button09",
+    text: "ok",
+    color: '#000000',
+    textStyle: '15px Future'
+  });
+  this.addMod(this.button, this.contentGroup);
+  this.button.group.position.setTo(
+      0,
+          this.window.height / 2 - this.button.bounds.height / 2 - 50
+  );
+
+  this.contentGroup.scale.set(0.1, 0.1);
   this.contentGroup.visible = false;
+};
+
+Popup.prototype.onPostCreate = function () {
+  this.button.button.onInputUp.add(function () {
+    this.dismiss();
+  }, this);
 };
 
 Popup.prototype.onResize = function () {
@@ -73,7 +96,7 @@ Popup.prototype.show = function () {
 
 Popup.prototype.dismiss = function () {
   this.tweens.remove(this.tween);
-  this.tween = this.tweens.create(this.contentGroup.scale).to({x: 0.001, y: 0.001}, 300, Phaser.Easing.Linear.None, true)
+  this.tween = this.tweens.create(this.contentGroup.scale).to({x: 0.1, y: 0.1}, 300, Phaser.Easing.Linear.None, true)
       .onComplete.add(function(){
         this.contentGroup.visible = false;
         this._blockingImage.width = 0;
