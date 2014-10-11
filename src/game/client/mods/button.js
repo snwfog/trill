@@ -9,11 +9,21 @@ var Button = function (game, parms) {
   this.button = null;
   this.text = null;
 
-  Object.defineProperty(this, 'size', {
-    get: function () {
-      return this.button !== null ? { width: this.button.width, height: this.button.height} : {width: 0, height: 0};
-    }
-  });
+  var state = this;
+  Object.defineProperties(this.bounds,
+      {
+        width: {
+          get: function () {
+            return state.button !== null ? state.button.width : 0;
+          }
+        },
+
+        height: {
+          get: function () {
+            return state.button !== null ? state.button.height : 0;
+          }
+        }
+      });
 };
 
 Button.prototype = Object.create(State.prototype);
@@ -27,11 +37,11 @@ Button.prototype.onCreate = function () {
   this.text = this.game.add.text(0, 0, this.parms.text, {font: this.parms.textStyle || '15px Future', fill: this.parms.color || '#EEEEEE'}, this.group);
   this.text.anchor.setTo(0.5, 0.5);
 
-  this.button.onInputDown.add(function(){
+  this.button.onInputDown.add(function () {
     this.text.position.setTo(0, 3);
   }, this);
 
-  this.button.onInputUp.add(function(){
+  this.button.onInputUp.add(function () {
     this.text.position.setTo(0, 0);
   }, this);
 };
