@@ -2,19 +2,19 @@ var WebApi = function (config) {
 
   return {
 
-  /**
-   @_listener can define the following callbacks:
+    /**
+     @_listener can define the following callbacks:
 
-   connected
-   disconnected
-   gameReady
-   gameEnded
-   packetReceived (packet)
-   disconnected
-   otherPlayerConnectionLost
-   gameCountDownStart
-   */
-  _listener: {},
+     connected
+     disconnected
+     gameReady
+     gameEnded
+     packetReceived (packet)
+     disconnected
+     otherPlayerConnectionLost
+     gameCountDownStart
+     */
+    _listener: {},
 
     _socketId: {},
 
@@ -28,51 +28,52 @@ var WebApi = function (config) {
       var api = this;
       api._socket = io(config.url);
 
-      api._socket.on('connect', function () {
-        console.log('connected');
-        api._socket.emit('requestId');
-      });
+      api._socket
+          .on('connect', function () {
+            console.log('connected');
+            this.emit('requestId');
+          })
 
-      api._socket.on('disconnect', function () {
-        console.log('disconnected');
-        api._fireEvent('disconnected');
-      });
+          .on('disconnect', function () {
+            console.log('disconnected');
+            api._fireEvent('disconnected');
+          })
 
-      api._socket.on('newId', function (id) {
-        console.log('new id created :' + id);
-        api._socketId = id;
-        api._fireEvent('connected');
-      });
+          .on('newId', function (id) {
+            console.log('new id created :' + id);
+            api._socketId = id;
+            api._fireEvent('connected');
+          })
 
-      api._socket.on('gameReady', function (data) {
-        console.log('event gameready fired')
-        api._fireEvent('gameReady')
-      });
+          .on('gameReady', function (data) {
+            console.log('event gameready fired')
+            api._fireEvent('gameReady')
+          })
 
-      api._socket.on('serverPacket', function (data) {
-        console.log('event serverPacket fired')
-        api._fireEvent('packetReceived', data)
-      });
+          .on('serverPacket', function (data) {
+            console.log('event serverPacket fired')
+            api._fireEvent('packetReceived', data)
+          })
 
-      api._socket.on('gameEnded', function (data) {
-        console.log('event gameended fired')
-        api._fireEvent('gameEnded', data)
-      });
+          .on('gameEnded', function (data) {
+            console.log('event gameended fired')
+            api._fireEvent('gameEnded', data)
+          })
 
-      api._socket.on('otherPlayerConnectionLost', function (data) {
-        console.log('event otherplayerconnectionlost fired')
-        api._fireEvent('otherPlayerConnectionLost')
-      });
+          .on('otherPlayerConnectionLost', function (data) {
+            console.log('event otherplayerconnectionlost fired')
+            api._fireEvent('otherPlayerConnectionLost')
+          })
 
-      api._socket.on('gameCreated', function (data) {
-        console.log('event game created fired')
-        console.log(data)
-        api._fireEvent('gameCreated', data)
-      });
+          .on('gameCreated', function (data) {
+            console.log('event game created fired')
+            console.log(data)
+            api._fireEvent('gameCreated', data)
+          })
 
-      api._socket.on('gameCountDownStart', function (data) {
-        api._fireEvent('gameCountDownStart', data)
-      });
+          .on('gameCountDownStart', function (data) {
+            api._fireEvent('gameCountDownStart', data)
+          });
     },
 
     /**
