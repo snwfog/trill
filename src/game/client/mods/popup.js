@@ -58,12 +58,6 @@ Popup.prototype.onCreate = function () {
     textStyle: '15px Future'
   });
   this.addMod(this.button, this.contentGroup);
-  this.button.group.position.setTo(
-      0,
-          this.window.height / 2 - this.button.bounds.height / 2 - 50
-  );
-
-  this.contentGroup.scale.set(0.1, 0.1);
   this.contentGroup.visible = false;
 };
 
@@ -75,6 +69,11 @@ Popup.prototype.onPostCreate = function () {
 
 Popup.prototype.onResize = function () {
   this.contentGroup.position.setTo(0, 0);
+
+  this.button.group.position.setTo(
+      0,
+          this.window.height / 2 - this.button.bounds.height / 2 - 50
+  );
 
   this._blockingImage.x = 0;
   this._blockingImage.y = 0;
@@ -88,9 +87,10 @@ Popup.prototype.show = function () {
   this._blockingImage.width = this.game.width;
   this._blockingImage.height = this.game.height;
 
-  this.tweens.remove(this.tween);
-
   this.contentGroup.visible = true;
+
+  this.tweens.remove(this.tween);
+  this.contentGroup.scale.set(0.1, 0.1);
   this.tween = this.tweens.create(this.contentGroup.scale).to({x: 1, y: 1}, 300, Phaser.Easing.Linear.None, true);
 };
 
