@@ -22,13 +22,17 @@ MenuState.prototype.onCreate = function () {
   this.newButton = factory.button.blue(this.game, "New Game");
   this.joinButton = factory.button.yellow(this.game, "Join Game");
   this.helpButton = factory.button.grey(this.game, "?");
+//  var popup = factory.popup(this.game, "This is some help text.");
 
   this.addMods([
     this.title,
     this.newButton,
     this.joinButton,
-    this.helpButton
+    this.helpButton,
+//    popup
   ]);
+
+//  setTimeout(function(){ popup.show(); }, 3000);
 };
 
 MenuState.prototype.onRender = function () {

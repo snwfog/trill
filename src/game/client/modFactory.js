@@ -1,5 +1,6 @@
 var Button = require('mods/button.js');
 var Title = require('mods/title.js');
+var Popup = require('mods/popup.js');
 
 var modFactory = {
 
@@ -38,6 +39,12 @@ var modFactory = {
     title: function(game){
       return new Title(game);
     }
+  },
+
+  popup: function(game, text){
+    return new Popup(game, {
+      text: text
+    });
   }
 };
 
