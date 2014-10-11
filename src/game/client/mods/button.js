@@ -24,7 +24,7 @@ Button.prototype.onCreate = function () {
   this.button = this.add.button(0, 0, this.parms.sheet, undefined, undefined, this.parms.up, this.parms.up, this.parms.down, this.parms.up, this.group);
   this.button.anchor.setTo(0.5, 0.5);
 
-  this.text = this.game.add.text(0, 0, this.parms.text, {font: '15px Future', fill: '#EEEEEE'}, this.group);
+  this.text = this.game.add.text(0, 0, this.parms.text, {font: this.parms.textStyle || '15px Future', fill: this.parms.color || '#EEEEEE'}, this.group);
   this.text.anchor.setTo(0.5, 0.5);
 
   this.button.onInputDown.add(function(){

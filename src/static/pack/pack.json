@@ -12,6 +12,13 @@
       "key": "yellowSheet",
       "textureURL": "static/atlas/yellowSheet.png",
       "atlasURL": "static/atlas/yellowSheet.xml"
+    },
+
+    {
+      "type": "atlasXML",
+      "key": "greySheet",
+      "textureURL": "static/atlas/greySheet.png",
+      "atlasURL": "static/atlas/greySheet.xml"
     }
   ]
 }

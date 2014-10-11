@@ -20,6 +20,17 @@ var modFactory = {
         down: "yellow_button01",
         text: text
       })
+    },
+
+    grey: function(game, text){
+      return new Button(game, {
+        sheet:"greySheet",
+        up: "grey_button08",
+        down: "grey_button09",
+        text: text,
+        color : '#000000',
+        textStyle : '25px Future'
+      })
     }
   },
 
