@@ -8,4 +8,5 @@ game.webapi = new trill.WebApi({
 
 game.state.add('inGame', trill.State.InGame);
 game.state.add('menu', trill.State.Menu);
+game.state.add('create', trill.State.Create);
 game.state.add('boot', trill.State.Boot, true);

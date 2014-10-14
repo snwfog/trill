@@ -32,11 +32,17 @@ MenuState.prototype.onCreate = function () {
     this.helpButton,
     this.popup
   ]);
+
+  factory.tween.fadeIn(this).start();
 };
 
 MenuState.prototype.onPostCreate = function () {
   this.helpButton.button.onInputUp.add(function () {
     this.popup.show();
+  }, this);
+
+  this.newButton.button.onInputUp.add(function (){
+    factory.tween.fadeOut(this, 'create').start();
   }, this);
 };
 

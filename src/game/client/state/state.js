@@ -91,7 +91,7 @@ State.prototype.addMod = function (mod, group) {
  * Called only if the state is a root state
  */
 State.prototype.init = function () {
-  this.group = this.world;
+  this.group = this.add.group();
 }
 
 State.prototype.preload = function () {
