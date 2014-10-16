@@ -1,7 +1,7 @@
 var State = require('state/state.js');
 var Button = require('mods/button.js');
 
-var Popup = function(game, parms){
+var Popup = function (game, parms) {
 
   State.call(this, game);
 
@@ -62,7 +62,7 @@ Popup.prototype.onCreate = function () {
 };
 
 Popup.prototype.onPostCreate = function () {
-  this.button.button.onInputUp.add(function () {
+  this.button.object.onInputUp.add(function () {
     this.dismiss();
   }, this);
 };
@@ -97,7 +97,7 @@ Popup.prototype.show = function () {
 Popup.prototype.dismiss = function () {
   this.tweens.remove(this.tween);
   this.tween = this.tweens.create(this.contentGroup.scale).to({x: 0.1, y: 0.1}, 300, Phaser.Easing.Linear.None, true)
-      .onComplete.add(function(){
+      .onComplete.add(function () {
         this.contentGroup.visible = false;
         this._blockingImage.width = 0;
         this._blockingImage.height = 0;

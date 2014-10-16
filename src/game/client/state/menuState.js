@@ -22,7 +22,7 @@ MenuState.prototype.onCreate = function () {
   this.title = factory.text.title(this.game, 'Trill');
   this.newButton = factory.button.blue(this.game, "New Game");
   this.joinButton = factory.button.yellow(this.game, "Join Game");
-  this.helpButton = factory.button.grey(this.game, "?");
+  this.helpButton = factory.button.grey.small(this.game, "?");
   this.popup = factory.popup(this.game, "This is some help text.");
 
   this.addMods([
@@ -37,11 +37,11 @@ MenuState.prototype.onCreate = function () {
 };
 
 MenuState.prototype.onPostCreate = function () {
-  this.helpButton.button.onInputUp.add(function () {
+  this.helpButton.object.onInputUp.add(function () {
     this.popup.show();
   }, this);
 
-  this.newButton.button.onInputUp.add(function (){
+  this.newButton.object.onInputUp.add(function () {
     factory.tween.fadeOut(this, 'create').start();
   }, this);
 };

@@ -9,31 +9,43 @@ var modFactory = {
   button: {
     blue: function (game, text) {
       return new Button(game, {
-        sheet:"blueSheet",
+        sheet: "blueSheet",
         up: "blue_button00",
         down: "blue_button01",
         text: text
-      })
+      });
     },
 
-    yellow: function(game, text){
+    yellow: function (game, text) {
       return new Button(game, {
-        sheet:"yellowSheet",
+        sheet: "yellowSheet",
         up: "yellow_button00",
         down: "yellow_button01",
         text: text
-      })
+      });
     },
 
-    grey: function(game, text){
-      return new Button(game, {
-        sheet:"greySheet",
-        up: "grey_button08",
-        down: "grey_button09",
-        text: text,
-        color : '#000000',
-        textStyle : '25px Future'
-      })
+    grey: {
+      big: function (game, text) {
+        return new Button(game, {
+          sheet: "greySheet",
+          up: "grey_button15",
+          down: "grey_button00",
+          text: text,
+          color: '#000000'
+        });
+      },
+
+      small: function (game, text) {
+        return new Button(game, {
+          sheet: "greySheet",
+          up: "grey_button08",
+          down: "grey_button09",
+          text: text,
+          color: '#000000',
+          textStyle: '25px Future'
+        });
+      }
     }
   },
 
@@ -43,15 +55,15 @@ var modFactory = {
     }
   },
 
-  popup: function(game, text){
+  popup: function (game, text) {
     return new Popup(game, {
       text: text
     });
   },
 
-  tween:{
-    fadeIn:FadeIn,
-    fadeOut:FadeOut
+  tween: {
+    fadeIn: FadeIn,
+    fadeOut: FadeOut
   }
 };
 
