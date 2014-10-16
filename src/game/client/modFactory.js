@@ -3,6 +3,7 @@ var Title = require('mods/title.js');
 var Popup = require('mods/popup.js');
 var FadeOut = require('mods/fadeOut.js');
 var FadeIn = require('mods/fadeIn.js');
+var Text = require('mods/text.js');
 
 var modFactory = {
 
@@ -52,6 +53,13 @@ var modFactory = {
   text: {
     title: function (game, text) {
       return new Title(game, {text: text});
+    },
+    normal: function (game, text) {
+      return new Text(game, {
+        value: text,
+        color: '#EEEEEE',
+        style: '15px Future'
+      });
     }
   },
 
