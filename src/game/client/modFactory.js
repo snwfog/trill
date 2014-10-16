@@ -38,8 +38,8 @@ var modFactory = {
   },
 
   text: {
-    title: function(game){
-      return new Title(game);
+    title: function (game, text) {
+      return new Title(game, {text: text});
     }
   },
 

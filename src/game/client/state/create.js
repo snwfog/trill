@@ -15,20 +15,13 @@ Create.prototype = Object.create(State.prototype);
 Create.prototype.constructor = Create;
 
 Create.prototype.onCreate = function () {
-  this.title = factory.text.title(this.game);
+  this.title = factory.text.title(this.game, 'New Game');
 
   this.addMods([
     this.title
   ]);
 
   factory.tween.fadeIn(this).start();
-};
-
-Create.prototype.onPostCreate = function () {
-
-};
-
-Create.prototype.onRender = function () {
 };
 
 Create.prototype.onResize = function (width, height) {
