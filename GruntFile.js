@@ -6,12 +6,12 @@ var remapify = require('remapify');
 
 module.exports = function (grunt) {
 
-  var options = {
+  var args = {
     deploy: grunt.option('deploy') || './deploy',
     url: grunt.option('url') || 'http://localhost:8080/'
   };
 
-  var urlObj = url.parse(options.url);
+  var urlObj = url.parse(args.url);
   var indexUrl = url.resolve(url.format(urlObj), '/index.html');
 
   grunt.loadNpmTasks('grunt-bower-task');
@@ -29,7 +29,7 @@ module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    options: options,
+    args: args,
 
     open: {
       dev: {
@@ -51,7 +51,7 @@ module.exports = function (grunt) {
               'static/**/*.ttf',
               'static/**/*.xml',
               'static/**/*.json'],
-            dest: path.normalize(options.deploy)
+            dest: path.normalize(args.deploy)
           }
         ]
       },
@@ -61,7 +61,7 @@ module.exports = function (grunt) {
             expand: true,
             flatten: true,
             src: ['./src/lib/*'],
-            dest: path.join(options.deploy, '/lib')
+            dest: path.join(args.deploy, '/lib')
           }
         ]
       },
@@ -71,7 +71,7 @@ module.exports = function (grunt) {
             expand: true,
             flatten: true,
             src: ['src/static/*.html'],
-            dest: path.normalize(options.deploy)
+            dest: path.normalize(args.deploy)
           }
         ]
       }
@@ -81,7 +81,7 @@ module.exports = function (grunt) {
       install: {
         options: {
           verbose: true,
-          targetDir: path.join(options.deploy, '/lib')
+          targetDir: path.join(args.deploy, '/lib')
         }
       }
     },
@@ -95,9 +95,9 @@ module.exports = function (grunt) {
         },
 
         files: {
-          '<%= options.deploy %>/index.html': [
-            path.join(options.deploy, '/lib/**/*.js'),
-            path.join(options.deploy, '/trillClient.js')
+          '<%= args.deploy %>/index.html': [
+            path.join(args.deploy, '/lib/**/*.js'),
+            path.join(args.deploy, '/trillClient.js')
           ]
         }
       },
@@ -110,8 +110,8 @@ module.exports = function (grunt) {
         },
 
         files: {
-          '<%= options.deploy %>/index.html': [
-            path.join(options.deploy, '/static/**/*.css')
+          '<%= args.deploy %>/index.html': [
+            path.join(args.deploy, '/static/**/*.css')
           ]
         }
       }
@@ -121,7 +121,7 @@ module.exports = function (grunt) {
     browserify: {
       dev: {
         files: {
-          '<%= options.deploy %>/trillClient.js': ['src/game/client/**/*.js']
+          '<%= args.deploy %>/trillClient.js': ['src/game/client/**/*.js']
         },
         options: {
 
@@ -145,7 +145,7 @@ module.exports = function (grunt) {
       }
     },
 
-    clean: [options.deploy],
+    clean: [args.deploy],
 
     concurrent: {
       dev: {
@@ -194,7 +194,7 @@ module.exports = function (grunt) {
 
     env: {
       dev: {
-        TRILL_SERVER_ASSET_ROOT: path.normalize(options.deploy),
+        TRILL_SERVER_ASSET_ROOT: path.normalize(args.deploy),
         TRILL_SERVER_URL: url.format(urlObj)
       }
     }
