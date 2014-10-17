@@ -29,6 +29,8 @@ module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
+    options: options,
+
     open: {
       dev: {
         path: indexUrl
@@ -93,7 +95,7 @@ module.exports = function (grunt) {
         },
 
         files: {
-          'deploy/index.html': [
+          '<%= options.deploy %>/index.html': [
             path.join(options.deploy, '/lib/**/*.js'),
             path.join(options.deploy, '/trillClient.js')
           ]
@@ -108,7 +110,7 @@ module.exports = function (grunt) {
         },
 
         files: {
-          'deploy/index.html': [
+          '<%= options.deploy %>/index.html': [
             path.join(options.deploy, '/static/**/*.css')
           ]
         }
@@ -119,7 +121,7 @@ module.exports = function (grunt) {
     browserify: {
       dev: {
         files: {
-          'deploy/trillClient.js': ['src/game/client/**/*.js']
+          '<%= options.deploy %>/trillClient.js': ['src/game/client/**/*.js']
         },
         options: {
 
@@ -143,7 +145,7 @@ module.exports = function (grunt) {
       }
     },
 
-    clean: ["./deploy"],
+    clean: [options.deploy],
 
     concurrent: {
       dev: {
