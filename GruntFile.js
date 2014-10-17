@@ -201,4 +201,5 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', ['build', 'concurrent']);
   grunt.registerTask('build', ['clean', 'env', 'browserify', 'bower', 'copy', 'injector']);
+  grunt.registerTask('build-watch', ['build', 'watch']);
 };
