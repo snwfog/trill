@@ -4,7 +4,7 @@ var Letter = function (game, parms) {
 
   State.call(this, game);
 
-  this.text = parms.text || "Trill";
+  this.parms = parms;
 
   // the max amount by which the letter will move
   this.moveAmount = new Phaser.Point(5, 2);
@@ -51,14 +51,13 @@ Letter.prototype.constructor = Letter;
 
 Letter.prototype.onCreate = function () {
 
-  this.titleBackground = this.game.add.text(0, 0, this.text, {font: '65px Saucer', fill: '#FFFFFF'}, this.group);
+  this.titleBackground = this.game.add.text(0, 0, this.parms.text || "", {font: this.parms.font || '65px Saucer', fill: '#FFFFFF'}, this.group);
   this.titleBackground.alpha = 0.5;
   this.titleBackground.anchor.setTo(0.5, 1);
   this.titleBackground.wordWrap = true;
   this.titleBackground.align = 'center';
 
-
-  this.titleTxt = this.game.add.text(0, 0, this.text, {font: '65px Saucer', fill: '#FFFFFF'}, this.group);
+  this.titleTxt = this.game.add.text(0, 0, this.parms.text || "", {font: this.parms.font || '65px Saucer', fill: '#FFFFFF'}, this.group);
   this.titleTxt.anchor.setTo(0.5, 1);
   this.titleTxt.wordWrap = true;
   this.titleTxt.align = 'center';

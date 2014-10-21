@@ -10,6 +10,7 @@ var Create = function (game) {
   this.title = null;
   this.backButton = null;
   this.infoText = null;
+  this.codeText = null;
 };
 
 Create.prototype = Object.create(State.prototype);
@@ -17,14 +18,16 @@ Create.prototype = Object.create(State.prototype);
 Create.prototype.constructor = Create;
 
 Create.prototype.onCreate = function () {
-  this.title = factory.text.title(this.game, 'New Game');
+  this.title = factory.text.title.big(this.game, 'New Game');
   this.backButton = factory.button.grey.big(this.game, 'Back');
   this.infoText = factory.text.normal(this.game, 'Ask your opponent to click on "Join game" and enter the following code :');
+  this.codeText = factory.text.title.small(this.game, 'Wait...');
 
   this.addMods([
     this.title,
     this.backButton,
-    this.infoText
+    this.infoText,
+    this.codeText
   ]);
 
   factory.tween.fadeIn(this).start();
@@ -50,10 +53,12 @@ Create.prototype.onResize = function (width, height) {
   if (width > height) {
     this.infoText.object.wordWrapWidth = width / 2 - textMargin;
     this.infoText.group.position.setTo(width / 2 - this.infoText.bounds.width / 2 - textMargin / 2, 0.5 * height);
+    this.codeText.group.position.setTo(0.75 * width, 0.5 * height);
   }
   else {
     this.infoText.object.wordWrapWidth = width - textMargin * 2;
     this.infoText.group.position.setTo(width / 2, 0.5 * height);
+    this.codeText.group.position.setTo(width / 2, this.infoText.bounds.bottom + textMargin + this.codeText.bounds.height);
   }
 
 };

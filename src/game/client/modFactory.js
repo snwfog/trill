@@ -51,9 +51,16 @@ var modFactory = {
   },
 
   text: {
-    title: function (game, text) {
-      return new Title(game, {text: text});
+    title: {
+      big: function (game, text) {
+        return new Title(game, {text: text});
+      },
+
+      small: function (game, text) {
+        return new Title(game, {text: text, font: '30px Saucer'});
+      }
     },
+
     normal: function (game, text) {
       return new Text(game, {
         value: text,

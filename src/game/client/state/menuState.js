@@ -19,7 +19,7 @@ MenuState.prototype = Object.create(State.prototype);
 MenuState.prototype.constructor = MenuState;
 
 MenuState.prototype.onCreate = function () {
-  this.title = factory.text.title(this.game, 'Trill');
+  this.title = factory.text.title.big(this.game, 'Trill');
   this.newButton = factory.button.blue(this.game, "New Game");
   this.joinButton = factory.button.yellow(this.game, "Join Game");
   this.helpButton = factory.button.grey.small(this.game, "?");
