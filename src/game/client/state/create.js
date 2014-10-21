@@ -41,12 +41,28 @@ Create.prototype.onPostCreate = function () {
   this.backButton.object.onInputUp.add(function () {
     factory.tween.fadeOut(this, 'menu').start();
   }, this);
+
+  var state = this;
+  this.game.webapi
+      .on('connected', function () {
+        state.webapi.createGame();
+      })
+
+      .on('gameCreated', function (gameCode) {
+        state.codeText.text = gameCode;
+      })
+
+      .on('gameReady', function () {
+        // go to in game state
+      })
+
+      .connect();
 };
 
 Create.prototype.onResize = function (width, height) {
 
   this.title.wordWrapWidth = width - textMargin * 2;
-  this.title.group.position.setTo(width / 2, Math.max(0.25 * height, this.title.bounds.height / 2 + textMargin));
+  this.title.group.position.setTo(width / 2, Math.max(0.25 * height, this.title.bounds.height + textMargin));
 
   this.backButton.group.position.setTo(width / 2, 0.85 * height);
 

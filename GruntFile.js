@@ -148,11 +148,16 @@ module.exports = function (grunt) {
     clean: [args.deploy],
 
     concurrent: {
+      options: {
+        logConcurrentOutput: true
+      },
+
       dev: {
-        tasks: ['build', 'nodemon', 'watch'],
-        options: {
-          logConcurrentOutput: true
-        }
+        tasks: ['build', 'nodemon', 'watch']
+      },
+
+      test: {
+        tasks: ['build:test', 'nodemon', 'watch']
       }
     },
 
@@ -183,25 +188,69 @@ module.exports = function (grunt) {
     },
 
     watch: {
-      scripts: {
+
+      options: {
+        livereload: true
+      },
+
+      dev: {
         files: ['src/game/client/**/*.js'],
-        tasks: ['build'],
-        options: {
-          livereload: true
-        }
+        tasks: ['build']
+      },
+
+      test: {
+        files: ['src/game/client/**/*.js'],
+        tasks: ['build:test']
       }
     },
 
     env: {
-      dev: {
+
+      all: {
         TRILL_SERVER_ASSET_ROOT: path.normalize(args.deploy),
         TRILL_SERVER_URL: url.format(urlObj)
+      },
+
+      dev: {
+        options: {
+          add: {
+            TRILL_SERVER_SRC: 'src/game/server/trillServer.js'
+          }
+        }
+      },
+
+      test: {
+        options: {
+          add: {
+            TRILL_SERVER_SRC: 'src/game/server/mock.js'
+          }
+        }
       }
     }
 
   });
 
-  grunt.registerTask('default', ['build', 'concurrent']);
-  grunt.registerTask('build', ['clean', 'env', 'browserify', 'bower', 'copy', 'injector']);
-  grunt.registerTask('build-watch', ['build', 'watch']);
+  grunt.registerTask('build', 'Builds the client part of the game', function (target) {
+
+    var t = target || 'dev';
+
+    grunt.task.run('clean', 'env:all', 'env:' + t, 'browserify', 'bower', 'copy', 'injector');
+  });
+
+  grunt.registerTask('build-watch', 'Builds the client + watch and builds on file changes.', function (target) {
+
+    var t = target || 'dev';
+
+    grunt.task.run('build:' + t, 'watch:' + t);
+  });
+
+  grunt.registerTask('default', 'Builds the client + watch and builds on file changes + run the server', function (target) {
+
+    var t = target || 'dev';
+
+    grunt.task.run('build:' + t, 'concurrent:' + t);
+  });
+
+  grunt.registerTask('test', ['default:test']);
+
 };

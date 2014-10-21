@@ -211,3 +211,6 @@ var $log = {};
 ['warn', 'error', 'info', 'log'].forEach(function (type) {
   $log[type] = logFactory(type);
 });
+
+module.exports = {listen: function (server) {
+}};
