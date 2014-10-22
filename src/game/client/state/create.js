@@ -45,7 +45,7 @@ Create.prototype.onPostCreate = function () {
   var state = this;
   this.game.webapi
       .on('connected', function () {
-        state.webapi.createGame();
+        state.game.webapi.createGame();
       })
 
       .on('gameCreated', function (gameCode) {
