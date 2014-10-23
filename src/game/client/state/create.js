@@ -39,6 +39,8 @@ Create.prototype.onPostCreate = function () {
   this.infoText.object.align = 'center';
 
   this.backButton.object.onInputUp.add(function () {
+
+    this.game.webapi.disconnect();
     factory.tween.fadeOut(this, 'menu').start();
   }, this);
 

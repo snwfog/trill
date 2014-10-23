@@ -26,7 +26,9 @@ var WebApi = function (config) {
     connect: function () {
 
       var api = this;
-      api._socket = io(config.url);
+      api._socket = io(config.url, {
+        forceNew: true
+      });
 
       api._socket
           .on('connect', function () {
@@ -74,6 +76,23 @@ var WebApi = function (config) {
           .on('gameCountDownStart', function (data) {
             api._fireEvent('gameCountDownStart', data)
           });
+    },
+
+    /**
+     * Stops listening to web sockets events and ends
+     * the socket connection.
+     */
+    disconnect: function () {
+      this.off();
+      this._socket.close();
+      this._socket = null;
+    },
+
+    /**
+     * Stops listening to web sockets events
+     */
+    off: function () {
+      this._listener = {};
     },
 
     /**
@@ -125,7 +144,7 @@ var WebApi = function (config) {
 
     _fireEvent: function (eventName, data) {
       console.log(this._listener)
-      if (this._listener[eventName] != null) {
+      if (this._listener[eventName] !== undefined) {
         this._listener[eventName](data)
       }
     }
