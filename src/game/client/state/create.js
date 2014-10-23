@@ -49,7 +49,11 @@ Create.prototype.onPostCreate = function () {
       })
 
       .on('gameCreated', function (gameCode) {
-        state.codeText.text = gameCode;
+
+        state.add.tween(state.codeText.group).to({alpha: 0}, 500, Phaser.Easing.Cubic.InOut, true, 0, 1, true)
+            .onLoop.addOnce(function () {
+              state.codeText.text = gameCode;
+            });
       })
 
       .on('gameReady', function () {
