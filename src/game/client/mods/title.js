@@ -17,14 +17,27 @@ var Letter = function (game, parms) {
   this.titleTxt = null;
   this.titleBackground = null;
 
-  Object.defineProperty(this, 'wordWrapWidth', {
-    get: function () {
-      return this.title !== null ? this.titleTxt.wordWrapWidth : 0
+  Object.defineProperties(this, {
+
+    wordWrapWidth: {
+      get: function () {
+        return this.title !== null ? this.titleTxt.wordWrapWidth : 0
+      },
+      set: function (value) {
+        if (this.titleTxt !== null && this.titleBackground !== null) {
+          this.titleTxt.wordWrapWidth = value;
+          this.titleBackground.wordWrapWidth = value;
+        }
+      }
     },
-    set: function (value) {
-      if (this.titleTxt !== null && this.titleBackground !== null) {
-        this.titleTxt.wordWrapWidth = value;
-        this.titleBackground.wordWrapWidth = value;
+
+    text: {
+      get: function () {
+        return this.titleTxt.text;
+      },
+      set: function (value) {
+        this.titleTxt.text = value;
+        this.titleBackground.text = value;
       }
     }
   });

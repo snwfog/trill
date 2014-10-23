@@ -13,9 +13,14 @@ exports.listen = function (server) {
 
 
     socket.on('createGame', function () {
-      return socket.emit('gameReady');
-    });
 
+      setTimeout(function () {
+        socket.emit('gameCreated', 1337);
+        setTimeout(function () {
+          socket.emit('gameReady');
+        }, 2000);
+      }, 2000);
+    });
 
     socket.on('joinGame', function () {
       return socket.emit('gameReady');
