@@ -66,12 +66,12 @@ Letter.prototype.onCreate = function () {
 
   this.titleBackground = this.game.add.text(0, 0, this.parms.text || "", {font: this.parms.font || '65px Saucer', fill: '#FFFFFF'}, this.group);
   this.titleBackground.alpha = 0.5;
-  this.titleBackground.anchor.setTo(0.5, 1);
+  this.titleBackground.anchor.setTo(0.5, 0.5);
   this.titleBackground.wordWrap = true;
   this.titleBackground.align = 'center';
 
   this.titleTxt = this.game.add.text(0, 0, this.parms.text || "", {font: this.parms.font || '65px Saucer', fill: '#FFFFFF'}, this.group);
-  this.titleTxt.anchor.setTo(0.5, 1);
+  this.titleTxt.anchor.setTo(0.5, 0.5);
   this.titleTxt.wordWrap = true;
   this.titleTxt.align = 'center';
 

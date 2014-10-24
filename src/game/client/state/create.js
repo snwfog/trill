@@ -21,25 +21,29 @@ Create.prototype.onCreate = function () {
   this.title = factory.text.title.big(this.game, 'New Game');
   this.backButton = factory.button.grey.big(this.game, 'Back');
   this.infoText = factory.text.normal(this.game, 'Ask your opponent to click on "Join game" and enter the following code :');
-  this.codeText = factory.text.title.small(this.game, 'Wait...');
+  this.codeText = factory.text.title.small(this.game, '');
+  this.waitText = factory.text.title.small(this.game, 'Wait...');
 
   this.addMods([
     this.title,
     this.backButton,
     this.infoText,
-    this.codeText
+    this.codeText,
+    this.waitText
   ]);
-
-  factory.tween.fadeIn(this).start();
 };
 
 Create.prototype.onPostCreate = function () {
 
+  factory.tween.fadeIn(this).start();
+
   this.infoText.object.wordWrap = true;
   this.infoText.object.align = 'center';
+  this.infoText.group.alpha = 0;
+
+  this.codeText.group.alpha = 0;
 
   this.backButton.object.onInputUp.add(function () {
-
     this.game.webapi.disconnect();
     factory.tween.fadeOut(this, 'menu').start();
   }, this);
@@ -52,9 +56,15 @@ Create.prototype.onPostCreate = function () {
 
       .on('gameCreated', function (gameCode) {
 
-        state.add.tween(state.codeText.group).to({alpha: 0}, 500, Phaser.Easing.Cubic.InOut, true, 0, 1, true)
-            .onLoop.addOnce(function () {
+        factory.tween.fadeOut(state.waitText).start()
+            .onComplete.addOnce(function () {
+
+              state.infoText.group.alpha = 1;
+              state.codeText.group.alpha = 1;
               state.codeText.text = gameCode;
+
+              factory.tween.fadeIn(state.codeText).start();
+              factory.tween.fadeIn(state.infoText).start();
             });
       })
 
@@ -68,9 +78,11 @@ Create.prototype.onPostCreate = function () {
 Create.prototype.onResize = function (width, height) {
 
   this.title.wordWrapWidth = width - textMargin * 2;
-  this.title.group.position.setTo(width / 2, Math.max(0.25 * height, this.title.bounds.height + textMargin));
+  this.title.group.position.setTo(width / 2, Math.max(0.25 * height, this.title.bounds.height / 2 + textMargin));
 
   this.backButton.group.position.setTo(width / 2, 0.85 * height);
+
+  this.waitText.group.position.setTo(width / 2, height / 2);
 
   if (width > height) {
     this.infoText.object.wordWrapWidth = width / 2 - textMargin;

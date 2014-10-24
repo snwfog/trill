@@ -53,7 +53,7 @@ MenuState.prototype.onRender = function () {
 };
 
 MenuState.prototype.onResize = function (width, height) {
-  this.title.group.position.setTo(width / 2, 0.25 * height);
+  this.title.group.position.setTo(width / 2, Math.max(0.25 * height, this.title.bounds.height / 2 + buttonSpacing));
 
   if (width > height) {
     this.newButton.group.position.setTo(width / 2 - this.newButton.bounds.width / 2 - buttonSpacing, 0.60 * height);
