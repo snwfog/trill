@@ -44,6 +44,10 @@ MenuState.prototype.onPostCreate = function () {
   this.newButton.object.onInputUp.add(function () {
     factory.tween.fadeOut(this, 'create').start();
   }, this);
+
+  this.joinButton.object.onInputUp.add(function () {
+    factory.tween.fadeOut(this, 'join').start();
+  }, this);
 };
 
 MenuState.prototype.onRender = function () {
