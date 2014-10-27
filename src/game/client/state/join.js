@@ -10,6 +10,7 @@ var Join = function (game) {
   this.title = null;
   this.backButton = null;
   this.infoText = null;
+  this.input = null;
 };
 
 Join.prototype = Object.create(State.prototype);
@@ -28,6 +29,12 @@ Join.prototype.onCreate = function () {
     this.infoText,
     this.waitText
   ]);
+
+  this.input = document.createElement("input");
+  this.input.type = 'text';
+  this.input.placeholder = 'Enter Code here';
+  this.input.style.position = 'fixed';
+  document.body.insertBefore(this.input, document.querySelector('canvas'));
 };
 
 Join.prototype.onPostCreate = function () {
@@ -69,12 +76,22 @@ Join.prototype.onResize = function (width, height) {
   if (width > height) {
     this.infoText.object.wordWrapWidth = width / 2 - textMargin;
     this.infoText.group.position.setTo(width / 2 - this.infoText.bounds.width / 2 - textMargin / 2, 0.5 * height);
+
+    this.input.style.left = (0.75 * width - this.input.offsetWidth / 2) + 'px';
+    this.input.style.top = (0.5 * height - this.input.offsetHeight / 2) + 'px';
   }
   else {
     this.infoText.object.wordWrapWidth = width - textMargin * 2;
     this.infoText.group.position.setTo(width / 2, 0.5 * height);
+
+    this.input.style.left = (0.5 * width - this.input.offsetWidth / 2) + 'px';
+    this.input.style.top = (this.infoText.bounds.bottom + textMargin + this.input.offsetHeight) + 'px';
   }
 
+};
+
+Join.prototype.onShutdown = function () {
+  this.input.parentNode.removeChild(this.input);
 };
 
 module.exports = Join;
