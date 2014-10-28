@@ -194,12 +194,12 @@ module.exports = function (grunt) {
       },
 
       dev: {
-        files: ['src/game/client/**/*.js'],
+        files: ['src/game/client/**/*.js', 'src/static/**'],
         tasks: ['build']
       },
 
       test: {
-        files: ['src/game/client/**/*.js'],
+        files: ['src/game/client/**/*.js', 'src/static/**'],
         tasks: ['build:test']
       }
     },

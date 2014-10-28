@@ -33,7 +33,7 @@ Join.prototype.onCreate = function () {
   this.input = document.createElement("input");
   this.input.type = 'text';
   this.input.placeholder = 'Code';
-  document.body.insertBefore(this.input, document.querySelector('canvas'));
+  document.querySelector('form').appendChild(this.input);
 };
 
 Join.prototype.onPostCreate = function () {
@@ -61,6 +61,12 @@ Join.prototype.onPostCreate = function () {
       })
 
       .connect();
+
+  this.input.parentNode.onsubmit = function () {
+    console.log('submitted');
+    state.input.blur();
+    return false;
+  };
 };
 
 Join.prototype.onResize = function (width, height) {
