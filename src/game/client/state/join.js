@@ -32,8 +32,7 @@ Join.prototype.onCreate = function () {
 
   this.input = document.createElement("input");
   this.input.type = 'text';
-  this.input.placeholder = 'Enter Code here';
-  this.input.style.position = 'fixed';
+  this.input.placeholder = 'Code';
   document.body.insertBefore(this.input, document.querySelector('canvas'));
 };
 
