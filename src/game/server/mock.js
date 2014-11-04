@@ -16,6 +16,7 @@ exports.listen = function (server) {
 
       setTimeout(function () {
         socket.emit('gameCreated', 1337);
+
         setTimeout(function () {
           socket.emit('gameReady');
         }, 2000);
@@ -23,14 +24,14 @@ exports.listen = function (server) {
     });
 
     socket.on('joinGame', function () {
-      return socket.emit('gameReady');
+      setTimeout(function(){
+        socket.emit('gameReady');
+      }, 3000);
     });
-
 
     socket.on('sendPacket', function (data) {
       return socket.broadcast.emit('packet Received', data);
     });
-
 
     socket.on('roundReady', function () {
 

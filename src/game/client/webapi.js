@@ -109,8 +109,8 @@ var WebApi = function (config) {
      Sends packet to the server. Server should emit either a
      gameReady response or an error response if game is not joinable.
      */
-    join: function () {
-      this._socket.emit('joinGame')
+    join: function (gameCode) {
+      this._socket.emit('joinGame', gameCode);
     },
 
     /**

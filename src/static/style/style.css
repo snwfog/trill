@@ -38,4 +38,16 @@ input {
   font-size: 20px;
   font-family: Future;
   outline: none;
+
+  opacity: 0;
+
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -ms-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+
+.visible {
+  opacity: 1;
 }

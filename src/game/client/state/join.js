@@ -39,6 +39,7 @@ Join.prototype.onCreate = function () {
 Join.prototype.onPostCreate = function () {
 
   factory.tween.fadeIn(this).start();
+  this.input.className = 'visible';
 
   this.infoText.object.wordWrap = true;
   this.infoText.object.align = 'center';
@@ -48,23 +49,16 @@ Join.prototype.onPostCreate = function () {
   this.backButton.object.onInputUp.add(function () {
     this.game.webapi.disconnect();
     factory.tween.fadeOut(this, 'menu').start();
+    this.input.className = '';
   }, this);
 
   var state = this;
-  this.game.webapi
-      .on('connected', function () {
-
-      })
-
-      .on('gameReady', function () {
-        // go to in game state
-      })
-
-      .connect();
 
   this.input.parentNode.onsubmit = function () {
-    console.log('submitted');
+
+    state.join(state.input.value);
     state.input.blur();
+
     return false;
   };
 };
@@ -97,6 +91,27 @@ Join.prototype.onResize = function (width, height) {
 
 Join.prototype.onShutdown = function () {
   this.input.parentNode.removeChild(this.input);
+};
+
+Join.prototype.join = function (gameCode) {
+
+  var state = this;
+  this.input.className = '';
+
+  factory.tween.fadeOut(this.infoText).chain(
+      factory.tween.fadeIn(state.waitText)
+  ).start();
+
+  this.game.webapi
+      .on('connected', function () {
+        state.game.webapi.join(gameCode);
+      })
+
+      .on('gameReady', function () {
+        factory.tween.fadeOut(state, 'inGame').start();
+      })
+
+      .connect();
 };
 
 module.exports = Join;
