@@ -108,6 +108,7 @@ Join.prototype.join = function (gameCode) {
       })
 
       .on('gameReady', function () {
+        state.game.webapi.off();
         factory.tween.fadeOut(state, 'inGame').start();
       })
 

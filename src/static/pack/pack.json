@@ -19,6 +19,20 @@
       "key": "greySheet",
       "textureURL": "static/atlas/greySheet.png",
       "atlasURL": "static/atlas/greySheet.xml"
+    },
+
+    {
+      "type": "image",
+      "key": "rope_knot",
+      "url": "static/img/rope_knot.png",
+      "overwrite": false
+    },
+
+    {
+      "type": "image",
+      "key": "rope_part",
+      "url": "static/img/rope_middle.png",
+      "overwrite": false
     }
   ]
 }
