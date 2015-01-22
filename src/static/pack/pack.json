@@ -30,6 +30,13 @@
 
     {
       "type": "image",
+      "key": "leaf",
+      "url": "static/img/leaf.png",
+      "overwrite": false
+    },
+
+    {
+      "type": "image",
       "key": "rope_part",
       "url": "static/img/rope_middle.png",
       "overwrite": false

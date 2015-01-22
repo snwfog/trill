@@ -14,6 +14,7 @@ var BootState = function () {
 
     create: function () {
 
+      this.game.stage.backgroundColor = "#FFFFFF";
       this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 
       // Allow the camera to go anywhere
@@ -25,7 +26,7 @@ var BootState = function () {
       this.loadingSprite.animations.add('load');
       this.loadingSprite.play('load', 20, true);
 
-      this.loadingTxt = this.game.add.text(0, 0, "loading", {font: '65px Inversionz', fill: "#FFFFFF"});
+      this.loadingTxt = this.game.add.text(0, 0, "loading", {font: '65px Inversionz', fill: "#000000"});
       this.loadingTxt.anchor.setTo(0.5, 0);
 
       var loadingTxtTween = this.game.add.tween(this.loadingTxt).to({alpha: 0}, 700, Phaser.Easing.Cubic.InOut, true, 0, Number.MAX_VALUE, true);

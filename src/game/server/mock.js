@@ -1,7 +1,7 @@
 var socketio = require('socket.io');
 
 /** Average clicking speed, in numOfClicks/millisecs */
-var averageSpeed = 62 / (10 * 1000);
+var averageSpeed = 30 / (10 * 1000);
 
 exports.listen = function (server) {
   var io = socketio.listen(server);
