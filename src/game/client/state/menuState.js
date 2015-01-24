@@ -7,7 +7,7 @@ var MenuState = function (game) {
 
   State.call(this, game);
 
-  this.emitter = null;
+  this.leaves = null;
   this.title = null;
   this.newButton = null;
   this.joinButton = null;
@@ -26,18 +26,10 @@ MenuState.prototype.onCreate = function () {
   this.joinButton = factory.button.yellow(this.game, "Join Game");
   this.helpButton = factory.button.grey.small(this.game, "?");
   this.popup = factory.popup(this.game, "This is some help text.");
-
-  this.emitter = this.game.make.emitter(0, 0, 100);
-  this.emitter.makeParticles("leaf");
-  this.emitter.gravity = 0;
-  this.emitter.width = this.game.world.width * 1.1;
-  this.emitter.setYSpeed(30, 100);
-  this.emitter.z = 0;
-  this.emitter.start(false);
-
-  this.group.add(this.emitter);
+  this.leaves = factory.leaves(this.game);
 
   this.addMods([
+    this.leaves,
     this.title,
     this.newButton,
     this.joinButton,
@@ -70,8 +62,7 @@ MenuState.prototype.onRender = function () {
 
 MenuState.prototype.onResize = function (width, height) {
 
-  this.emitter.position.setTo(width/2, -32);
-  this.emitter.width = this.game.world.width * 1.1;
+  this.leaves.group.position.setTo(width / 2, -32);
 
   this.title.group.position.setTo(width / 2, Math.max(0.25 * height, this.title.bounds.height / 2 + buttonSpacing));
 

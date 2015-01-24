@@ -4,6 +4,7 @@ var Popup = require('mods/popup.js');
 var FadeOut = require('mods/fadeOut.js');
 var FadeIn = require('mods/fadeIn.js');
 var Text = require('mods/text.js');
+var Leaves = require('mods/leaves.js');
 
 var modFactory = {
 
@@ -79,6 +80,10 @@ var modFactory = {
   tween: {
     fadeIn: FadeIn,
     fadeOut: FadeOut
+  },
+
+  leaves: function (game) {
+    return new Leaves(game);
   }
 };
 
