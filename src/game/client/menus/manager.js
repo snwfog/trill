@@ -1,4 +1,4 @@
-var mods = require('modFactory.js');
+var mods = require('mods/factory.js');
 var menus = require('menus/factory.js');
 var State = require('state/state.js');
 
@@ -7,6 +7,17 @@ var MenuManager = function (game) {
     State.call(this, game);
 
     this.currentMenu = null;
+
+    var manager = this;
+    this.onPostCreateTopMenu = function (menu) {
+        menu.newButton.object.onInputUp.add(function () {
+            manager.switchToCreateMenu();
+        });
+
+        menu.joinButton.object.onInputUp.add(function () {
+            manager.switchToJoinMenu();
+        });
+    };
 };
 
 MenuManager.prototype = Object.create(State.prototype);
@@ -15,21 +26,14 @@ MenuManager.prototype.constructor = MenuManager;
 
 MenuManager.prototype.onCreate = function () {
 
-    var topMod = new menus.top(this.game);
-    this.addMod(topMod);
-    mods.tween.fadeIn(topMod).start();
-    this.currentMenu = topMod;
+    var startMenu = new menus.top(this.game);
+    this.addMod(startMenu);
+    mods.tween.fadeIn(startMenu).start();
+    this.currentMenu = startMenu;
 };
 
 MenuManager.prototype.onPostCreate = function () {
-
-    this.currentMenu.newButton.object.onInputUp.add(function () {
-        this.switchToCreateMenu();
-    }, this);
-
-    this.currentMenu.joinButton.object.onInputUp.add(function () {
-        this.switchToJoinMenu();
-    }, this);
+    this.onPostCreateTopMenu(this.currentMenu);
 };
 
 MenuManager.prototype.onResize = function (width, height) {
@@ -56,16 +60,7 @@ MenuManager.prototype.switchToMenu = function (newMenu, onCompleteCallback, cont
 };
 
 MenuManager.prototype.switchToTopMenu = function () {
-    var manager = this;
-    this.switchToMenu(new menus.top(this.game), function (menu) {
-        menu.newButton.object.onInputUp.add(function () {
-            manager.switchToCreateMenu();
-        });
-
-        menu.joinButton.object.onInputUp.add(function () {
-            manager.switchToJoinMenu();
-        });
-    });
+    this.switchToMenu(new menus.top(this.game), this.onPostCreateTopMenu);
 };
 
 MenuManager.prototype.switchToCreateMenu = function () {

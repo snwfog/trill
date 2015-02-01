@@ -1,4 +1,4 @@
-var factory = require('modFactory.js');
+var factory = require('mods/factory.js');
 var State = require('state/state.js');
 var MenuManager = require('menus/manager.js');
 
