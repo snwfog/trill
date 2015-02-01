@@ -65,7 +65,7 @@ var modFactory = {
     normal: function (game, text) {
       return new Text(game, {
         value: text,
-        color: '#EEEEEE',
+        color: '#11111',
         style: '15px Future'
       });
     }

@@ -31,7 +31,10 @@ Text.prototype.constructor = Text;
 
 Text.prototype.onCreate = function () {
 
-  this.object = this.game.add.text(0, 0, this.parms.value, {font: this.parms.style || '15px Future', fill: this.parms.color || '#EEEEEE'}, this.group);
+  this.object = this.game.add.text(0, 0, this.parms.value, {
+    font: this.parms.style || '15px Future',
+    fill: this.parms.color || '#11111'
+  }, this.group);
   this.object.anchor.setTo(0.5, 0.5);
 };
 
