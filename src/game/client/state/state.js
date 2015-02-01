@@ -81,10 +81,26 @@ State.prototype.addMods = function (mods) {
   }
 };
 
-State.prototype.addMod = function (mod, group) {
+State.prototype.addMod = function (mod, group, attach) {
+
+  var attachMod = attach || false;
 
   mod.group = this.add.group(group || this.group);
   this.mods.push(mod);
+
+  if (attachMod) {
+    mod.preload();
+    mod.create();
+    mod.postCreate();
+    mod.resize(this.game.width, this.game.height);
+  }
+};
+
+State.prototype.removeMod = function (mod) {
+
+  mod.shutdown();
+  mod.group.destroy(true);
+  this.mods.splice(this.mods.indexOf(mod), 1);
 };
 
 /**
@@ -156,7 +172,7 @@ State.prototype.resize = function (width, height) {
   this.callEvent('onResize', width, height);
 
   for (var i in this.mods) {
-    this.mods[i].resize();
+    this.mods[i].resize(width, height);
   }
 };
 

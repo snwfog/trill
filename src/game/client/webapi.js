@@ -84,8 +84,11 @@ var WebApi = function (config) {
      */
     disconnect: function () {
       this.off();
-      this._socket.close();
-      this._socket = null;
+
+        if (this._socket != null) {
+            this._socket.close();
+            this._socket = null;
+        }
     },
 
     /**

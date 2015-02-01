@@ -35,18 +35,15 @@ Create.prototype.onCreate = function () {
 
 Create.prototype.onPostCreate = function () {
 
-  factory.tween.fadeIn(this).start();
+  this.backButton.object.onInputUp.add(function () {
+    this.game.webapi.disconnect();
+  }, this);
 
   this.infoText.object.wordWrap = true;
   this.infoText.object.align = 'center';
   this.infoText.group.alpha = 0;
 
   this.codeText.group.alpha = 0;
-
-  this.backButton.object.onInputUp.add(function () {
-    this.game.webapi.disconnect();
-    factory.tween.fadeOut(this, 'menu').start();
-  }, this);
 
   var state = this;
   this.game.webapi
@@ -96,5 +93,9 @@ Create.prototype.onResize = function (width, height) {
   }
 
 };
+
+Create.prototype.onShutdown = function () {
+  this.game.webapi.off();
+}
 
 module.exports = Create;

@@ -38,7 +38,6 @@ Join.prototype.onCreate = function () {
 
 Join.prototype.onPostCreate = function () {
 
-  factory.tween.fadeIn(this).start();
   this.input.className = 'visible';
 
   this.infoText.object.wordWrap = true;
@@ -48,7 +47,6 @@ Join.prototype.onPostCreate = function () {
 
   this.backButton.object.onInputUp.add(function () {
     this.game.webapi.disconnect();
-    factory.tween.fadeOut(this, 'menu').start();
     this.input.className = '';
   }, this);
 

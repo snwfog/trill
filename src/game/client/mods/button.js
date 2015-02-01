@@ -56,4 +56,9 @@ Button.prototype.onResize = function () {
   this.text.group.position.setTo(0, 0);
 };
 
+Button.prototype.onShutdown = function () {
+  this.object.onInputUp.removeAll();
+  this.object.onInputDown.removeAll();
+};
+
 module.exports = Button;
